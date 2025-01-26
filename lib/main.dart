@@ -1,16 +1,40 @@
 import 'package:flutter/material.dart';
 import "SignUp.dart";
 import "package:safecrop/LogIn.dart";
+import "Profile.dart";
 
-void main(){
+import 'package:firebase_core/firebase_core.dart';
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
+
+
     routes: {
       "/signUp":(context)=>SignUp(),
       "/Login":(context)=>Login(),
     },
     home:LoaderPage(),
-  ));
+  )
+  );
 }
+
+class Abc extends StatelessWidget {
+  const Abc({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+        "Hello World",
+      style: TextStyle(
+        color: Colors.teal,
+      ),
+    );
+  }
+}
+
 
 class LoaderPage extends StatefulWidget {
 
