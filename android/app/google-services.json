@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "481531315929",
+    "project_id": "safecrop-c426d",
+    "storage_bucket": "safecrop-c426d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481531315929:android:5da163a80613014d6be0c8",
+        "android_client_info": {
+          "package_name": "com.example.safecrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALlBviQGxZgx1Hk25b2Yx8par4LiMlbKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
