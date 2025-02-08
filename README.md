@@ -1,16 +1,48 @@
-# safecrop
+🐘 IoT-Based Elephant Intrusion Prevention System
 
-A new Flutter project.
+An IoT-powered solution to prevent elephants from invading farmland, reducing human-elephant conflict through real-time detection and alerts.
 
-## Getting Started
+📌 Features
 
-This project is a starting point for a Flutter application.
+Intrusion Detection: A trap wire fence detects breaches when elephants break the wire.
+Instant Alerts: Sends real-time notifications to farmers and wildlife officers via a Flutter app.
+Automated Alarm: Triggers a frequency-based deterrent alarm upon detection.
+Cloud-Backed Monitoring: Uses Firebase for data storage and alert management.
+🛠️ Technologies Used
 
-A few resources to get you started if this is your first Flutter project:
+Hardware: Microcontroller, voltage sensor, trap wire system
+Software: Flutter (mobile app), Firebase (cloud storage & notifications)
+Communication: IoT protocols for real-time data transmission
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🚀 Installation & Setup
+
+Clone the repository:
+git clone https://github.com/your-username/elephant-intrusion-system.git
+
+cd elephant-intrusion-system
+
+Install dependencies for the Flutter app:
+
+flutter pub get
+
+Connect the hardware and update Firebase credentials.
+
+Run the app:
+
+flutter run
+
+
+📢 Future Enhancements
+
+AI-powered movement prediction
+Drone integration for surveillance
+Machine learning for anomaly detection
+
+🤝 Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+📩 Contact
+
+For questions or collaboration opportunities, reach out via GitHub or social media.
