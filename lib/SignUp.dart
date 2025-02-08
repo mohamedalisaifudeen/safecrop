@@ -11,281 +11,263 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool? checkfarmer=true;
-  bool? checkOfficer=false;
+  bool? checkfarmer = true;
+  bool? checkOfficer = false;
   String? username;
-  String emial="";
+  String emial = "";
   String? mobile;
-  String password="";
-  String option="";
-  bool emailErrorTxt=false;
-  bool passwordError=false;
-  String? uid="";
+  String password = "";
+  String option = "";
+  bool emailErrorTxt = false;
+  bool passwordError = false;
+  String? uid = "";
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final GlobalKey<FormState> _formKey=GlobalKey<FormState>();
+  var db = FirebaseFirestore.instance;
 
-  var db=FirebaseFirestore.instance;
-  void addDatabase(String? uid,String? username,bool? checkfarmer){
-    final user=<String,dynamic>{
-      "uid":uid,
-      "username":username,
-      "type":(checkfarmer ?? false)?"Farmer":"Officer",
+  void addDatabase(String? uid, String? username, bool? checkfarmer,String? mobile) {
+    final user = <String, dynamic>{
+      "uid": uid,
+      "username": username,
+      "type": (checkfarmer ?? false) ? "Farmer" : "Officer",
+      "mobile":mobile,
     };
 
-    db.collection("userDetails").add(user).then((DocumentReference doc)=>
-        print("Added with ID: ${doc.id}"));
+    db
+        .collection("userDetails")
+        .add(user)
+        .then((DocumentReference doc) => print("Added with ID: ${doc.id}"));
   }
-  Future<void> createUser (String password,String email)async{
-    try{
-      final cred=await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
+
+  Future<void> createUser(String password, String email) async {
+    try {
+      final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      uid=cred.user?.uid;
+      uid = cred.user?.uid;
+      print(username);
 
-      addDatabase(uid,username,checkfarmer);
-
-
-    } on FirebaseAuthException catch(e){
-      if(e.code=="weak-password"){
+      addDatabase(uid, username, checkfarmer,mobile);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "weak-password") {
         print("The password provided is too weak");
         setState(() {
-          passwordError=true;
+          passwordError = true;
         });
-      }else if(e.code=="email-already-in-use"){
+      } else if (e.code == "email-already-in-use") {
         print("The account already exists with the above email id");
         setState(() {
-          emailErrorTxt=true;
+          emailErrorTxt = true;
         });
-
       }
-    }catch (e){
+    } catch (e) {
       print(e);
-    };
+    }
+    ;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child:SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-
-              children: [
-                Center(
-                  child:Image(image: AssetImage(
-                      "assets/Logo.png"
-                  )
-                  ),
-                ),
-                Form(
-                    key:_formKey,
-                    child: Column(
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(left: 50,right: 50,bottom: 30,top: 30),
-                            child:Column(
-                              children: [
-                                TxtInput(labelTxt: "Username",
-                                  password: false,
-                                  validator: (String?value){
-                                  if(value==null || value.isEmpty){
-                                    return "Please enter some text";
-                                  }
-                                  return null;
-
-                                },
-                                value: (value){
-                                  setState(() {
-                                    username=value;
-
-                                  });
-
-                                },
-                                ),
-                                TxtInput(labelTxt: "Email",
-                                  password: false,
-                                  validator: (String?value){
-                                  if(value==null || value.isEmpty||!value.contains("@")||!value.contains(".com")){
-                                    return "Enter a valid email id";
-                                  }else if(emailErrorTxt){
-                                    return "Email already in use";
-                                  }
-                                  return null;
-                                },
-                                  number: TextInputType.emailAddress,
-                                  value: (value){
-                                    setState(() {
-                                      emial=value;
-                                    });
-                                  },
-                                ),
-                                TxtInput(labelTxt: "Mobile Number",
-                                  password: false,
-                                    number: TextInputType.number,
-                                  formatter:[FilteringTextInputFormatter.digitsOnly],
-
-                                  validator: (String?value){
-                                  if(value==null || value.isEmpty||value.length!=10){
-                                    return "Please enter a valid number ";
-                                  }
-                                  return null;
-                                },
-                                  value: (value){
-                                    setState(() {
-                                      mobile=value;
-                                    });
-                                  },
-                                ),
-                                TxtInput(labelTxt: "Password",
-                                  password: true,
-                                  validator: (String?value){
-                                  if(value==null || value.isEmpty){
-                                    return "Please enter some text";
-                                  }else if(passwordError){
-                                    return "The password provided is too weak";
-                                  }
-                                  return null;
-                                },
-                                  value: (value){
-                                    setState(() {
-                                      password=value;
-                                    });
-                                  },
-                                ),
-
-                              ],
-                            )
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 60,bottom: 5),
-                              child: Text("I am a,",
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w700
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      activeColor: Colors.green,
-                                      side: BorderSide(
-                                          color: Colors.green,
-                                          width: 3
-                                      ),
-                                      value: checkfarmer,
-                                      onChanged: (newValue){
-                                        setState(() {
-                                          checkOfficer=false;
-                                          checkfarmer=newValue;
-                                        });
-                                      },
-
-                                    ),
-                                    Text(
-                                      "Farmer",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400
-                                      ),
-                                    )
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      activeColor: Colors.green,
-                                      side: BorderSide(
-                                          color: Colors.green,
-                                          width: 3
-                                      ),
-                                      value: checkOfficer,
-                                      onChanged: (vaue){
-                                        setState(() {
-                                          checkfarmer=false;
-                                          checkOfficer=vaue;
-                                        });
-
-                                      },
-
-                                    ),
-                                    Text(
-                                      "Officer",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400
-                                      ),
-                                    )
-                                  ],
-                                )
-
-                              ],
-                            ),
-                            Center(
-                              child: Text(
-                                (checkfarmer==false&& checkOfficer==false)?"Please select an option":option,
-                                style: TextStyle(
-                                  color: Colors.red,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-
-                        SizedBox(
-                          child:Container(
-                            margin: EdgeInsets.only(top: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            width: MediaQuery.of(context).size.width-80,
-                            child:TextButton(onPressed: (){
-                              final bool isvalid=_formKey.currentState?.validate()??false;
-                              if(!isvalid||(checkfarmer==false&&checkOfficer==false)){
-                                return;
-                              };
-                              createUser(password=password,emial=emial);
-                              _formKey.currentState?.reset();
+          child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Image(image: AssetImage("assets/Logo.png")),
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Container(
+                      margin: EdgeInsets.only(
+                          left: 50, right: 50, bottom: 30, top: 30),
+                      child: Column(
+                        children: [
+                          TxtInput(
+                            labelTxt: "Username",
+                            password: false,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter some text";
+                              }
+                              return null;
                             },
-                              child: Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w700
-                                ),
-                              ),
-
-                            ),
+                            value: (value) {
+                              setState(() {
+                                username = value;
+                              });
+                            },
                           ),
-
+                          TxtInput(
+                            labelTxt: "Email",
+                            password: false,
+                            validator: (String? value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains("@") ||
+                                  !value.contains(".com")) {
+                                return "Enter a valid email id";
+                              } else if (emailErrorTxt) {
+                                return "Email already in use";
+                              }
+                              return null;
+                            },
+                            number: TextInputType.emailAddress,
+                            value: (value) {
+                              setState(() {
+                                emial = value;
+                              });
+                            },
+                          ),
+                          TxtInput(
+                            labelTxt: "Mobile Number",
+                            password: false,
+                            number: TextInputType.number,
+                            formatter: [FilteringTextInputFormatter.digitsOnly],
+                            validator: (String? value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value.length != 10) {
+                                return "Please enter a valid number ";
+                              }
+                              return null;
+                            },
+                            value: (value) {
+                              setState(() {
+                                mobile = value;
+                              });
+                            },
+                          ),
+                          TxtInput(
+                            labelTxt: "Password",
+                            password: true,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter some text";
+                              } else if (passwordError) {
+                                return "The password provided is too weak";
+                              }
+                              return null;
+                            },
+                            value: (value) {
+                              setState(() {
+                                password = value;
+                              });
+                            },
+                          ),
+                        ],
+                      )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 60, bottom: 5),
+                        child: Text(
+                          "I am a,",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w700),
                         ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                activeColor: Colors.green,
+                                side: BorderSide(color: Colors.green, width: 3),
+                                value: checkfarmer,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkOfficer = false;
+                                    checkfarmer = newValue;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "Farmer",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Checkbox(
+                                activeColor: Colors.green,
+                                side: BorderSide(color: Colors.green, width: 3),
+                                value: checkOfficer,
+                                onChanged: (vaue) {
+                                  setState(() {
+                                    checkfarmer = false;
+                                    checkOfficer = vaue;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "Officer",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      Center(
+                        child: Text(
+                          (checkfarmer == false && checkOfficer == false)
+                              ? "Please select an option"
+                              : option,
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10)),
+                      width: MediaQuery.of(context).size.width - 80,
+                      child: TextButton(
+                        onPressed: () {
+                          final bool isvalid =
+                              _formKey.currentState?.validate() ?? false;
+                          if (!isvalid ||
+                              (checkfarmer == false && checkOfficer == false)) {
+                            return;
+                          }
+                          ;
+                          createUser(password, emial).then((_){
+                            _formKey.currentState?.reset();
+                          });
 
-
-                      ],
+                        },
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
                     ),
                   ),
-
-              ],
-
+                ],
+              ),
             ),
-          )
-      ),
+          ],
+        ),
+      )),
     );
   }
 }
-
-
-

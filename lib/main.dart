@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import "SignUp.dart";
 import "package:safecrop/LogIn.dart";
 import "Profile.dart";
+import "Map.dart";
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -15,6 +16,7 @@ void main() async{
     routes: {
       "/signUp":(context)=>SignUp(),
       "/Login":(context)=>Login(),
+      "/map_pg":(context)=> MapPage(),
     },
     home:LoaderPage(),
   )
@@ -71,7 +73,7 @@ class _LoaderPageState extends State<LoaderPage> {
         LoaderIncrementation();
       }else{
         loaderValue=0;
-        Navigator.pushNamed(context, '/Login');
+        Navigator.pushNamed(context, '/map_pg');
 
       }
     });
