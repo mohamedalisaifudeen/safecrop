@@ -8,6 +8,7 @@ Intrusion Detection: A trap wire fence detects breaches when elephants break the
 Instant Alerts: Sends real-time notifications to farmers and wildlife officers via a Flutter app.
 Automated Alarm: Triggers a frequency-based deterrent alarm upon detection.
 Cloud-Backed Monitoring: Uses Firebase for data storage and alert management.
+
 🛠️ Technologies Used
 
 Hardware: Microcontroller, voltage sensor, trap wire system
