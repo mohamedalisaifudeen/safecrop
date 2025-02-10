@@ -1,97 +1,79 @@
 import 'package:flutter/material.dart';
 import "SignUp.dart";
 import "package:safecrop/LogIn.dart";
+import "./homepage.dart";
 
-void main(){
+void main() {
   runApp(MaterialApp(
     routes: {
-      "/signUp":(context)=>SignUp(),
-      "/Login":(context)=>Login(),
+      "/signUp": (context) => HomePage(),
+      "/Login": (context) => Login(), // Route for HomePage
     },
-    home:LoaderPage(),
+    home: LoaderPage(),
   ));
 }
 
 class LoaderPage extends StatefulWidget {
-
   const LoaderPage({super.key});
-
 
   @override
   State<LoaderPage> createState() => _LoaderPageState();
 }
 
 class _LoaderPageState extends State<LoaderPage> {
-  double loaderValue=0;
-
-
-
+  double loaderValue = 0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
-      LoaderIncrementation();
-
-
+    LoaderIncrementation();
   }
 
-  void LoaderIncrementation(){
-    Future.delayed(Duration(seconds: 1),(){
-      if(loaderValue<=1){
+  void LoaderIncrementation() {
+    Future.delayed(Duration(seconds: 1), () {
+      if (loaderValue <= 1) {
         setState(() {
-          loaderValue=loaderValue+0.1;
+          loaderValue = loaderValue + 0.1;
         });
 
         print(loaderValue);
         LoaderIncrementation();
-      }else{
-        loaderValue=0;
+      } else {
+        loaderValue = 0;
         Navigator.pushNamed(context, '/Login');
-
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image(image:AssetImage(
-                  "assets/Logo.png"
-              ),
-            width: 50*20,
-            height: 50*10,
-
+          Image(
+            image: AssetImage("assets/Logo.png"),
+            width: 50 * 20,
+            height: 50 * 10,
           ),
           LinearProgressIndicator(
             value: loaderValue,
             color: Colors.green,
             minHeight: 5,
             borderRadius: BorderRadius.circular(10),
-
           ),
           Padding(
-              padding: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.only(top: 50),
             child: Text(
-                "Copyright © ${DateTime.now().year} all rights reserved",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600
-              ),
+              "Copyright © ${DateTime.now().year} all rights reserved",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
-
           )
         ],
-        
       ),
     );
   }
 }
-
-
-
