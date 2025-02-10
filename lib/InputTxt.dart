@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TxtInput extends StatelessWidget {
   String labelTxt;
-  TxtInput({required this.labelTxt});
+  TxtInput({super.key, required this.labelTxt});
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +17,13 @@ class TxtInput extends StatelessWidget {
                 width: 3.0,
                 style: BorderStyle.solid,
               ),
-              borderRadius: BorderRadius.circular(10)
-          ),
-          enabledBorder:OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10)),
+          enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.green,
                 width: 2.0,
-
               ),
-              borderRadius: BorderRadius.circular(10)
-          ) ,
-
+              borderRadius: BorderRadius.circular(10)),
         ),
       ),
     );
