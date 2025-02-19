@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
   @override
   State<SignUp> createState() => _SignUpState();
 }
