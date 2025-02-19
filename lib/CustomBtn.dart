@@ -3,7 +3,7 @@ class CustomBtn extends StatelessWidget {
   VoidCallback click;
   String txt;
   Color color;
-  CustomBtn({required this.click,required this.txt,required this.color});
+  CustomBtn({super.key, required this.click,required this.txt,required this.color});
 
   @override
   Widget build(BuildContext context) {
