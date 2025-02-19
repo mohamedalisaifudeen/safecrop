@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TxtInput extends StatelessWidget {
   String labelTxt;
-  TxtInput({required this.labelTxt});
+  TxtInput({super.key, required this.labelTxt});
 
   @override
   Widget build(BuildContext context) {
