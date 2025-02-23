@@ -8,45 +8,53 @@ void main() {
       "/signUp": (context) => SignUp(),
       "/Login": (context) => Login(),
     },
-    home: const SafecropScreen(), // Changed to new loading screen
+    home: const SafeCropScreen(),
   ));
 }
 
-class SafecropScreen extends StatelessWidget {
-  const SafecropScreen({super.key});
+class SafeCropScreen extends StatelessWidget {
+  const SafeCropScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center, // Center all column children
             children: [
+              const Spacer(flex: 2),
               // Logo Container with Circle Border
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.green.withOpacity(0.3),
-                    width: 2,
+              Center( // Ensure logo is centered
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.green.withOpacity(0.3),
+                      width: 1.5,
+                    ),
                   ),
-                ),
-                child: Center(
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(25),
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    children: List.generate(
-                      4,
-                      (index) => Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2D3B55),
-                          borderRadius: BorderRadius.circular(4),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(35),
+                      child: GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 6,
+                        crossAxisSpacing: 6,
+                        children: List.generate(
+                          4,
+                          (index) => Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2D3B55),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -55,7 +63,7 @@ class SafecropScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               
-              // Safecrop Text
+              // SafeCrop Text
               const Text(
                 'SafeCrop',
                 style: TextStyle(
@@ -86,14 +94,18 @@ class SafecropScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               
-              // Status Indicators
-              _buildStatusIndicator('Fence monitoring active'),
-              const SizedBox(height: 8),
-              _buildStatusIndicator('Network connected'),
-              const SizedBox(height: 8),
-              _buildStatusIndicator('GPS signal strong'),
+              // Status Indicators in a Column
+              Column(
+                children: [
+                  _buildStatusIndicator('Fence monitoring active'),
+                  const SizedBox(height: 12),
+                  _buildStatusIndicator('Network connected'),
+                  const SizedBox(height: 12),
+                  _buildStatusIndicator('GPS signal strong'),
+                ],
+              ),
               
-              const Spacer(),
+              const Spacer(flex: 3),
               
               // Bottom Text
               const Text(
@@ -122,6 +134,7 @@ class SafecropScreen extends StatelessWidget {
 
   Widget _buildStatusIndicator(String text) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center, // Center the row contents
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
