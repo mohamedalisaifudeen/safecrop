@@ -19,7 +19,7 @@ class AlertScreen extends StatelessWidget {
   ValueNotifier([
     {"title": "Alert Received to team", "status": false},
     {"title": "Assign task to team", "status": false},
-    {"title": "Leave team from team", "status": false},
+    {"title": "Leave office to field", "status": false},
     {"title": "Arrived to the field", "status": false},
     {"title": "Take action", "status": false},
     {"title": "Finished task", "status": false},
@@ -35,6 +35,7 @@ class AlertScreen extends StatelessWidget {
     }
     alertStepsNotifier.value = steps;
   }
+
 
   @override
   Widget build(BuildContext context) {
