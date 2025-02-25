@@ -3,7 +3,7 @@ import "SignUp.dart";
 import "package:safecrop/LogIn.dart";
 import "Profile.dart";
 import "Map.dart";
-
+import "Alert.dart";
 import 'package:firebase_core/firebase_core.dart';
 
 
@@ -17,6 +17,7 @@ void main() async{
       "/signUp":(context)=>SignUp(),
       "/Login":(context)=>Login(),
       "/map_pg":(context)=> MapPage(),
+      "/alert":(context)=>Alert(),
     },
     home:LoaderPage(),
   )
@@ -73,7 +74,7 @@ class _LoaderPageState extends State<LoaderPage> {
         LoaderIncrementation();
       }else{
         loaderValue=0;
-        Navigator.pushNamed(context, '/map_pg');
+        Navigator.pushNamed(context, '/alert');
 
       }
     });
@@ -113,6 +114,7 @@ class _LoaderPageState extends State<LoaderPage> {
 
           )
         ],
+        
         
       ),
     );
