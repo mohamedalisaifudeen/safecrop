@@ -4,7 +4,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -168,28 +168,62 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+        bottomNavigationBar: Container(
+
+          height: MediaQuery.sizeOf(context).height/16,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, '/home');
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.home_filled,color: Colors.grey.shade700,),
+                    Text("Home",style: TextStyle(
+                      color: Colors.grey.shade700,
+                    ),),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, '/alert');
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add_alert,color: Colors.grey.shade700,),
+                    Text("Alert",style: TextStyle(
+                      color: Colors.grey.shade700,
+                    ),),
+                  ],
+                ) ,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.map_rounded,color: Colors.grey.shade700,),
+                  Text("Map",style: TextStyle(
+                    color: Colors.grey.shade700,
+                  ),),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.settings,color: Colors.grey.shade700,),
+                  Text("Settings",style: TextStyle(
+                    color: Colors.grey.shade700,
+                  ),),
+                ],
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Alerts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
+        ),
+
     );
   }
 }
