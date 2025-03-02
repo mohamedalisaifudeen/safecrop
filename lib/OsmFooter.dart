@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "OsmMap.dart";
+//import "OsmMap.dart";
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,5 +22,27 @@ class OsmFooter extends StatelessWidget {
               borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30)
               )
-    ))]      ),
-    }}
+          ),
+
+          height: MediaQuery.of(context).size.height/4,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Alert ID: 0001XXXXXXXX",
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight:FontWeight.w500
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+           ]
+          )
+        )
+      ]
+    )                     
+  }  
+}
