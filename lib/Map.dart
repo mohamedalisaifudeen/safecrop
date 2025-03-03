@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import "OsmFooter.dart";
+import "OsmFooter.dart";
 
 class MapPage extends StatelessWidget {
   double lat = 6.9271;
@@ -18,7 +18,7 @@ class MapPage extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(12))),
         ),
-        //body: OsmFooter(lat: lat, long: long),
+        body: OsmFooter(lat: lat, long: long),
       ),
     );
   }
