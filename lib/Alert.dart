@@ -32,9 +32,76 @@ class Alert extends StatelessWidget {
                 ),),
               ],
             ),
-          ]
-        )
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.map_rounded,color: Colors.grey.shade700,),
+                Text("Map",style: TextStyle(
+                  color: Colors.grey.shade700,
+                ),),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.settings,color: Colors.grey.shade700,),
+                Text("Settings",style: TextStyle(
+                  color: Colors.grey.shade700,
+                ),),
+              ],
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: ListView(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow:[
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+
+                )
+              ]
+            ),
+            child: Column(
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(20),
+                  child:Row(
+                    children: [
+                      Padding(padding:EdgeInsets.only(right: 19) ,
+                      child: Icon(Icons.warning,color: Colors.red,size: 50),),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("FENCE BREACH ",style: TextStyle(
+                              color: Colors.red,
+                              fontSize:28,
+                              fontWeight: FontWeight.w700
+                          ),),
+                          Text("DETECTED",style: TextStyle(
+                              color: Colors.red,
+                              fontSize:28,
+                              fontWeight: FontWeight.w700
+                          ),)
+                        ],
+                      )
+                    ]
+                  )
+                )
+              ]
+            )
+          )
+        ]
       )
     ))
   }
-}              
+}                      
+             
