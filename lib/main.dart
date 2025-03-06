@@ -61,7 +61,7 @@ class _LoaderPageState extends State<LoaderPage> {
         LoaderIncrementation();
       }else{
         loaderValue=0;
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/Login');
 
       }
     });
