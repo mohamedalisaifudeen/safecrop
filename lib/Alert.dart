@@ -1,16 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import "ActionCard.dart";
-class Alert extends StatelessWidget {
+import "dart:convert";
+import "package:http/http.dart" as http;
+
+
+
+
+
+class Alert extends StatefulWidget {
+
+  @override
+  State<Alert> createState() => _AlertState();
+}
+
+
+
+class _AlertState extends State<Alert> {
   double lat=6.9271;
   double long=79.8612;
+  int voltage=0;
+
+  Future<void> getData()async{
+    final response =await http.get(Uri.parse("http://10.0.2.2:5001/getVoltage"));
+    if(response.statusCode==200){
+      final data=jsonDecode(response.body);
+      setState(() {
+        voltage=data["Voltage"];
+      });
+      print(voltage);
+
+    }else{
+      throw Exception("Failed to load the data");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return SafeArea(child: Scaffold(
       bottomNavigationBar: Container(
-       height: MediaQuery.sizeOf(context).height/16,
+        height: MediaQuery.sizeOf(context).height/16,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -58,26 +94,26 @@ class Alert extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow:[
-                BoxShadow(
-                  color: Colors.grey.withValues(alpha: 0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
+                color: Colors.white,
+                boxShadow:[
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
 
-                )
-              ]
+                  )
+                ]
             ),
             child: Column(
 
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                    padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   child:Row(
                     children: [
                       Padding(padding:EdgeInsets.only(right: 19) ,
-                      child: Icon(Icons.warning,color: Colors.red,size: 50),),
+                        child: Icon(Icons.warning,color: Colors.red,size: 50),),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -110,46 +146,46 @@ class Alert extends StatelessWidget {
             ),
           ),
           Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.width/22),
-          child:           Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                ),
-                child: OSMViewer(
-                  controller: SimpleMapController(
-                    initPosition: GeoPoint(
-                      latitude: lat,
-                      longitude: long,
-                    ),
-                    markerHome: const MarkerIcon(
-                      icon: Icon(Icons.location_on,color: Colors.red,size: 50,),
-                    ),
+            child:           Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                  child: OSMViewer(
+                    controller: SimpleMapController(
+                      initPosition: GeoPoint(
+                        latitude:lat ,
+                        longitude: long,
+                      ),
+                      markerHome: const MarkerIcon(
+                        icon: Icon(Icons.location_on,color: Colors.red,size: 50,),
+                      ),
 
+                    ),
+                    zoomOption: const ZoomOption(
+                      initZoom: 16,
+                      minZoomLevel: 2,
+                    ),
                   ),
-                  zoomOption: const ZoomOption(
-                    initZoom: 16,
-                    minZoomLevel: 2,
-                  ),
+                  height: 220,
                 ),
-                height: 220,
-              ),
-              Padding(padding: EdgeInsets.only(bottom: 8),
-              child:Row(
-                children: [
-                  Icon(Icons.location_on,color: Colors.red,),
-                  Text("Sector B7 Colombo"),
-                ],
-              ),),
-              Row(
-                children: [
-                  Icon(Icons.navigation_rounded,color: Colors.grey,),
-                  Text("2.3km from the base station"),
-                ],
-              )
-            ],
-          ),
+                Padding(padding: EdgeInsets.only(bottom: 8),
+                  child:Row(
+                    children: [
+                      Icon(Icons.location_on,color: Colors.red,),
+                      Text("Sector B7 Colombo"),
+                    ],
+                  ),),
+                Row(
+                  children: [
+                    Icon(Icons.navigation_rounded,color: Colors.grey,),
+                    Text("2.3km from the base station"),
+                  ],
+                )
+              ],
+            ),
           ),
           Container(
             margin: EdgeInsets.all(20),
@@ -170,29 +206,29 @@ class Alert extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(padding: EdgeInsets.only(bottom: 20),
-                child:Text("Alert Details",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20
-                  ),),
+                  child:Text("Alert Details",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20
+                    ),),
                 ),
                 Row(
                   children: [
                     Icon(Icons.stacked_bar_chart_rounded,color: Colors.amber,),
                     Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/4.7),
                       child: Text("Voltage Reading"),),
-                    Text("0.2V (Normal: 5V)"),
+                    Text(voltage.toString()+"V"+ " (Normal: 5V)"),
                   ],
                 ),
                 Padding(padding: EdgeInsets.only(top: 13,bottom: 13),
-                child: Row(
-                  children: [
-                    Icon(Icons.warning_sharp,color: Colors.red,),
-                    Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/5.4),
-                      child: Text("Wire Break Type"),),
-                    Text("Wire break detected"),
-                  ],
-                ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.warning_sharp,color: Colors.red,),
+                      Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/5.4),
+                        child: Text("Wire Break Type"),),
+                      Text("Wire break detected"),
+                    ],
+                  ),
                 ),
 
                 Row(
@@ -201,7 +237,7 @@ class Alert extends StatelessWidget {
                     Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/2.3),
                       child: Text("Security Level"),),
                     Text("High",style: TextStyle(
-                      color: Colors.red
+                        color: Colors.red
                     ),),
                   ],
                 ),
@@ -228,17 +264,17 @@ class Alert extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(padding: EdgeInsets.only(bottom: 10),
-                child:  Row(
-                  children: [
-                    Padding(padding: EdgeInsets.only(right: 6),
-                    child:Icon(Icons.warning_sharp,color: Colors.amber) ,),
+                  child:  Row(
+                    children: [
+                      Padding(padding: EdgeInsets.only(right: 6),
+                        child:Icon(Icons.warning_sharp,color: Colors.amber) ,),
 
-                    Text("Immediate Action Required",style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20
-                    ),)
-                  ],
-                ),),
+                      Text("Immediate Action Required",style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20
+                      ),)
+                    ],
+                  ),),
 
                 AlertCard(txt: "Deploy response team to location",icon: Icon(Icons.circle,color: Colors.amber,),),
                 AlertCard(txt: "Verify fence integrity",icon: Icon(Icons.circle,color: Colors.amber,),),
@@ -264,10 +300,10 @@ class Alert extends StatelessWidget {
                 ),
                 child:TextButton(onPressed: (){
                 }, child: Text("Deploy Respnse Team",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15
-                ),)),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15
+                  ),)),
               ),
 
               Container(
@@ -335,3 +371,6 @@ class Alert extends StatelessWidget {
     ));
   }
 }
+
+
+

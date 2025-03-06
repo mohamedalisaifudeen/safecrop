@@ -21,24 +21,28 @@ class _LoginState extends State<Login> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<void> signInUser(String email, String password) async {
+  Future<bool> signInUser(String email, String password) async {
     try {
       final credencial = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       print("Login Sucess");
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
         print("No user found for that email");
         setState(() {
           emailError=true;
         });
+        return false;
       } else if (e.code == "wrong-password") {
         print("Wrong password provided for that user.");
         setState(() {
           passError = true;
         });
+        return false;
       }
     }
+    return false;
   }
 
   @override
@@ -157,14 +161,18 @@ class _LoginState extends State<Login> {
                                     ],
                                   ),
                                   CustomBtn(
-                                    click: () {
+                                    click: ()async {
                                       final bool isvalid =
                                           _formKey.currentState?.validate() ??
                                               false;
                                       if (!isvalid) {
                                         return;
                                       };
-                                      signInUser(email, password);
+                                      var sigIn=await signInUser(email, password);
+                                      if(sigIn){
+                                        Navigator.pushNamed(context, '/home');
+                                      };
+
                                     },
 
                                     txt: "Log In",
