@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "481531315929",
-    "project_id": "safecrop-c426d",
-    "storage_bucket": "safecrop-c426d.firebasestorage.app"
+    "project_number": "796047915468",
+    "project_id": "flutter-message-6c11c",
+    "storage_bucket": "flutter-message-6c11c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:481531315929:android:5da163a80613014d6be0c8",
+        "mobilesdk_app_id": "1:796047915468:android:43042bea42e6fba3ca8569",
         "android_client_info": {
           "package_name": "com.example.safecrop"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyALlBviQGxZgx1Hk25b2Yx8par4LiMlbKA"
+          "current_key": "AIzaSyCjWaab1tDZoMrlUWIiTu43i7bAGjo3-NA"
         }
       ],
       "services": {
