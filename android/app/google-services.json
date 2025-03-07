@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "796047915468",
+    "project_id": "flutter-message-6c11c",
+    "storage_bucket": "flutter-message-6c11c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796047915468:android:43042bea42e6fba3ca8569",
+        "android_client_info": {
+          "package_name": "com.example.safecrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjWaab1tDZoMrlUWIiTu43i7bAGjo3-NA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

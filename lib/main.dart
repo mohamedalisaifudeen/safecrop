@@ -1,16 +1,50 @@
 import 'package:flutter/material.dart';
-import "SignUp.dart";
-import "package:safecrop/LogIn.dart";
-import "home_page.dart";
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; // Import the generated firebase_options.dart
+import 'package:firebase_messaging/firebase_messaging.dart'; // Import Firebase Messaging
+import 'LogIn.dart';
+import 'home_page.dart';
 
-void main() {
-  runApp(MaterialApp(
-    routes: {
-      "/signUp": (context) => HomePage(),
-      "/Login": (context) => Login(), // Route for HomePage
-    },
-    home: LoaderPage(),
-  ));
+void main() async {
+  // Ensure Flutter bindings are initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase with the configuration from firebase_options.dart
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Request permission to send notifications on iOS (necessary for iOS)
+  await FirebaseMessaging.instance.requestPermission();
+
+  // Get the Firebase Cloud Messaging token
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("Firebase Cloud Messaging Token: $token");
+
+  // Initialize background message handler (this is required to handle messages when the app is in the background or terminated)
+  FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
+
+  runApp(MyApp());
+}
+
+// Background message handler
+Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
+  print(
+      'Background message: ${message.notification?.title}, ${message.notification?.body}');
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      routes: {
+        "/signUp": (context) => HomePage(),
+        "/Login": (context) => Login(),
+      },
+      home: LoaderPage(),
+    );
+  }
 }
 
 class LoaderPage extends StatefulWidget {
@@ -26,8 +60,19 @@ class _LoaderPageState extends State<LoaderPage> {
   @override
   void initState() {
     super.initState();
-
     LoaderIncrementation();
+
+    // Listen to foreground messages
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Received message in foreground: ${message.notification?.title}');
+      // You can handle the notification here (e.g., show a dialog, navigate, etc.)
+    });
+
+    // Handle when the app is opened from a background message
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('App opened from background: ${message.notification?.title}');
+      // Navigate or perform any other actions as needed
+    });
   }
 
   void LoaderIncrementation() {
@@ -71,7 +116,7 @@ class _LoaderPageState extends State<LoaderPage> {
               "Copyright © ${DateTime.now().year} all rights reserved",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
-          )
+          ),
         ],
       ),
     );
