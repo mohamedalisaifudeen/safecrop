@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class Alert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,27 +12,23 @@ class MyApp extends StatelessWidget {
 }
 
 class AlertScreen extends StatelessWidget {
-  final ValueNotifier<List<Map<String, dynamic>>> alertStepsNotifier =
-  ValueNotifier([
-    {"title": "Alert Received to team", "status": false},
-    {"title": "Assign task to team", "status": false},
-    {"title": "Leave office to field", "status": false},
-    {"title": "Arrived to the field", "status": false},
-    {"title": "Take action", "status": false},
-    {"title": "Finished task", "status": false},
-  ]);
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void markNextAsDone() {
-    List<Map<String, dynamic>> steps = List.from(alertStepsNotifier.value);
-    for (int i = 0; i < steps.length; i++) {
-      if (!steps[i]["status"]) {
-        steps[i]["status"] = true;
-        break; // Mark only the first "pending" step and stop
-      }
-    }
-    alertStepsNotifier.value = steps;
+  void toggleTaskStatus(String docId, bool currentStatus) {
+    _firestore.collection('alerts').doc(docId).update({
+      "status": !currentStatus, // Toggle status (true/false)
+    });
   }
 
+  void markNextTaskDone() async {
+    var tasks = await _firestore.collection('alerts').get();
+    for (var doc in tasks.docs) {
+      if (!(doc.data()["status"] ?? false)) {
+        _firestore.collection('alerts').doc(doc.id).update({"status": true});
+        break; // Mark only one task at a time
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,44 +66,46 @@ class AlertScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Divider(thickness: 1),
-                      ValueListenableBuilder<List<Map<String, dynamic>>>(
-                        valueListenable: alertStepsNotifier,
-                        builder: (context, alertSteps, child) {
+                      StreamBuilder<QuerySnapshot>(
+                        stream: _firestore.collection('alerts').snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          var alertSteps = snapshot.data!.docs;
+
                           return Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: alertSteps.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(
-                                      alertSteps[index]["title"],
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                    trailing: alertSteps[index]["status"]
-                                        ? Icon(Icons.check_circle, color: Colors.green)
-                                        : Text(
-                                      "Pending.....",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontStyle: FontStyle.italic),
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: markNextAsDone,
-                                child: Text("Mark Next Task Done"),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  foregroundColor: Colors.white,
-                                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                            children: alertSteps.map((doc) {
+                              var data = doc.data() as Map<String, dynamic>;
+                              return ListTile(
+                                title: Text(
+                                  data["title"],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            ],
+                                trailing: GestureDetector(
+                                  onTap: () => toggleTaskStatus(doc.id, data["status"]),
+                                  child: Icon(
+                                    data["status"]
+                                        ? Icons.check_circle
+                                        : Icons.circle_outlined,
+                                    color: data["status"] ? Colors.green : Colors.grey,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                           );
                         },
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: markNextTaskDone,
+                        child: Text("Mark Next Task Done"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                        ),
                       ),
                     ],
                   ),
