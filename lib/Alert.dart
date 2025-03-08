@@ -3,8 +3,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import "ActionCard.dart";
 import "dart:convert";
 import "package:http/http.dart" as http;
-
-
+import 'dart:async';
 
 
 
@@ -13,8 +12,6 @@ class Alert extends StatefulWidget {
   @override
   State<Alert> createState() => _AlertState();
 }
-
-
 
 class _AlertState extends State<Alert> {
   double lat=6.9271;
@@ -39,6 +36,9 @@ class _AlertState extends State<Alert> {
   void initState() {
     super.initState();
     getData();
+    Timer.periodic(Duration(seconds: 3),(Timer t){
+      getData();
+    });
   }
 
   @override
