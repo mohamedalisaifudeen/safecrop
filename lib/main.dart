@@ -6,7 +6,7 @@ import "Map.dart";
 import "Alert.dart";
 import 'package:firebase_core/firebase_core.dart';
 import 'homepage.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +36,7 @@ class LoaderPage extends StatefulWidget {
 }
 
 class _LoaderPageState extends State<LoaderPage> {
+
   double loaderValue=0;
 
 
@@ -93,21 +94,10 @@ class _LoaderPageState extends State<LoaderPage> {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(35),
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 6,
-                        crossAxisSpacing: 6,
-                        children: List.generate(
-                          4,
-                              (index) => Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF2D3B55),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                        ),
+                      child:SpinKitFadingCube(
+                        color: Colors.green,
+                        size: 50.0,
+                          duration: Duration(seconds: 3),
                       ),
                     ),
                   ),
@@ -147,15 +137,17 @@ class _LoaderPageState extends State<LoaderPage> {
               const SizedBox(height: 32),
 
               // Status Indicators in a Column
-              Column(
+              Center(child:            Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildStatusIndicator('Fence monitoring active'),
+                  Padding(padding: EdgeInsets.only(left: 40),child: _buildStatusIndicator('Fence monitoring active')),
                   const SizedBox(height: 12),
-                  _buildStatusIndicator('Network connected'),
+                  Padding(padding: EdgeInsets.only(left: 10),child: _buildStatusIndicator('Network connected')),
+
                   const SizedBox(height: 12),
                   _buildStatusIndicator('GPS signal strong'),
                 ],
-              ),
+              )),
 
               const Spacer(flex: 3),
 
