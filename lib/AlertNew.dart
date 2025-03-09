@@ -75,7 +75,10 @@ class AlertScreen extends StatelessWidget {
                               return ListTile(
                                 title: Text(
                                   alertSteps[index]["title"],
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18, // Increased font size here
+                                  ),
                                 ),
                                 trailing: GestureDetector(
                                   onTap: () => toggleTaskStatus(index),
