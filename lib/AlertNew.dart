@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AlertScreen extends StatelessWidget {
+class AlertScreen extends StatefulWidget {
+  @override
+  _AlertScreenState createState() => _AlertScreenState();
+}
+
+class _AlertScreenState extends State<AlertScreen> {
   final ValueNotifier<List<Map<String, dynamic>>> alertStepsNotifier =
   ValueNotifier([
     {"title": "Alert Received to team", "status": false},
@@ -24,6 +30,19 @@ class AlertScreen extends StatelessWidget {
     {"title": "Take action", "status": false},
     {"title": "Finished task", "status": false},
   ]);
+
+  late String alertID;
+
+  @override
+  void initState() {
+    super.initState();
+    alertID = generateRandomID(); // Generate random Alert ID
+  }
+
+  String generateRandomID() {
+    final random = Random();
+    return (random.nextInt(900000) + 100000).toString(); // Generates a 6-digit ID
+  }
 
   void toggleTaskStatus(int index) {
     List<Map<String, dynamic>> steps = List.from(alertStepsNotifier.value);
@@ -63,7 +82,7 @@ class AlertScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Alert ID : 000XXXXX",
+                        "Alert ID : $alertID", // Display generated Alert ID
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Divider(thickness: 1),
@@ -75,10 +94,7 @@ class AlertScreen extends StatelessWidget {
                               return ListTile(
                                 title: Text(
                                   alertSteps[index]["title"],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18, // Increased font size here
-                                  ),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 trailing: GestureDetector(
                                   onTap: () => toggleTaskStatus(index),
