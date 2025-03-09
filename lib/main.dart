@@ -5,13 +5,22 @@ import "Profile.dart";
 import "Map.dart";
 import "Alert.dart";
 import 'package:firebase_core/firebase_core.dart';
-import 'homepage.dart';
+import "home_page.dart";
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore package
+import 'package:flutter/material.dart'; // Import the generated firebase_options.dart
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(
+  await FirebaseMessaging.instance.requestPermission();
+
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("Firebase Cloud Messaging Token: $token");
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
+runApp(MaterialApp(
 
 
     routes: {
@@ -22,8 +31,25 @@ void main() async{
       "/home":(context)=>HomePage(),
     },
     home:LoaderPage(),
-  )
+  ),
   );
+
+}
+
+
+
+Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
+  saveAlertToFirestore(message);
+}
+
+Future<void> saveAlertToFirestore(RemoteMessage message) async {
+  if (message.notification != null) {
+    FirebaseFirestore.instance.collection('notifications').add({
+      'title': message.notification!.title ?? 'No Title',
+      'body': message.notification!.body ?? 'No Body',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
 }
 
 class LoaderPage extends StatefulWidget {
@@ -35,10 +61,12 @@ class LoaderPage extends StatefulWidget {
   State<LoaderPage> createState() => _LoaderPageState();
 }
 
-class _LoaderPageState extends State<LoaderPage> {
+class _LoaderPageState extends State<LoaderPage> with SingleTickerProviderStateMixin {
 
   double loaderValue=0;
-
+  late AnimationController _controller;
+  late Animation<Offset> _safeAnimation;
+  late Animation<Offset> _cropAnimation;
 
 
 
@@ -48,7 +76,41 @@ class _LoaderPageState extends State<LoaderPage> {
 
       LoaderIncrementation();
 
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      saveAlertToFirestore(message);
+    });
 
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      saveAlertToFirestore(message);
+      print('App opened from background: ${message.notification?.title}');
+    });
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
+    );
+
+
+    _safeAnimation = Tween<Offset>(
+      begin: Offset(-1.5, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+
+    _cropAnimation = Tween<Offset>(
+      begin: Offset(1.5, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+
+
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void LoaderIncrementation(){
@@ -105,15 +167,37 @@ class _LoaderPageState extends State<LoaderPage> {
               ),
               const SizedBox(height: 24),
 
-              // SafeCrop Text
-              const Text(
-                'SafeCrop',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF2D3B55),
+              Center(
+                child:               Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  SlideTransition(
+                  position: _safeAnimation,
+                  child: Text(
+                    'Safe',
+                    style: TextStyle(
+                      fontSize: 44,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF2D3B55),
+                    ),
+                  ),
+                ),
+                    SlideTransition(
+                      position: _cropAnimation,
+                      child: Text(
+                        'Crop',
+                        style: TextStyle(
+                          fontSize: 44,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              // SafeCrop Text
+
               const SizedBox(height: 8),
 
               // Initializing System Text
