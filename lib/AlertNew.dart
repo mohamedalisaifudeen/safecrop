@@ -1,8 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For formatting time
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase
   runApp(MyApp());
 }
 
@@ -22,6 +26,8 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final ValueNotifier<List<Map<String, dynamic>>> alertStepsNotifier =
   ValueNotifier([
     {"title": "Alert Received to team", "status": false, "timestamp": null},
@@ -37,29 +43,44 @@ class _AlertScreenState extends State<AlertScreen> {
   @override
   void initState() {
     super.initState();
-    alertID = generateRandomID(); // Generate random Alert ID
+    alertID = generateRandomID(); // Generate a random Alert ID
+    saveAlertToFirestore(); // Save initial alert data to Firestore
   }
 
   String generateRandomID() {
     final random = Random();
-    return (random.nextInt(900000) + 100000).toString(); // Generates a 6-digit ID
+    return (random.nextInt(900000) + 100000).toString(); // 6-digit ID
   }
 
   String getCurrentTime() {
-    return DateFormat('hh:mm a').format(DateTime.now()); // Example: 03:45 PM
+    return DateFormat('hh:mm a').format(DateTime.now()); // Format time
   }
 
-  void toggleTaskStatus(int index) {
+  // Save the alert with default task statuses to Firestore
+  void saveAlertToFirestore() async {
+    await _firestore.collection('alerts').doc(alertID).set({
+      "alertID": alertID,
+      "tasks": alertStepsNotifier.value,
+      "createdAt": DateTime.now(),
+    });
+  }
+
+  // Update task status in Firestore when the user taps a task
+  void toggleTaskStatus(int index) async {
     List<Map<String, dynamic>> steps = List.from(alertStepsNotifier.value);
     steps[index]["status"] = !steps[index]["status"];
 
     if (steps[index]["status"]) {
-      steps[index]["timestamp"] = getCurrentTime(); // Save timestamp when checked
+      steps[index]["timestamp"] = getCurrentTime();
     } else {
-      steps[index]["timestamp"] = null; // Remove timestamp when unchecked
+      steps[index]["timestamp"] = null;
     }
 
-    alertStepsNotifier.value = steps; // Update UI
+    alertStepsNotifier.value = steps;
+
+    await _firestore.collection('alerts').doc(alertID).update({
+      "tasks": steps,
+    });
   }
 
   @override
@@ -94,7 +115,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Alert ID : $alertID", // Display generated Alert ID
+                        "Alert ID : $alertID",
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Divider(thickness: 1),
@@ -106,16 +127,11 @@ class _AlertScreenState extends State<AlertScreen> {
                               return ListTile(
                                 title: Text(
                                   alertSteps[index]["title"],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 16),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                 ),
                                 subtitle: alertSteps[index]["timestamp"] != null
-                                    ? Text(
-                                  "Completed at: ${alertSteps[index]["timestamp"]}",
-                                  style: TextStyle(
-                                      color: Colors.green.shade700, // Updated color
-                                      fontWeight: FontWeight.w500),
-                                )
+                                    ? Text("Completed at: ${alertSteps[index]["timestamp"]}",
+                                    style: TextStyle(color: Colors.blueAccent))
                                     : null,
                                 trailing: GestureDetector(
                                   onTap: () => toggleTaskStatus(index),
