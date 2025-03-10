@@ -110,8 +110,12 @@ class _AlertScreenState extends State<AlertScreen> {
                                       fontWeight: FontWeight.bold, fontSize: 16),
                                 ),
                                 subtitle: alertSteps[index]["timestamp"] != null
-                                    ? Text("Completed at: ${alertSteps[index]["timestamp"]}",
-                                    style: TextStyle(color: Colors.blue))
+                                    ? Text(
+                                  "Completed at: ${alertSteps[index]["timestamp"]}",
+                                  style: TextStyle(
+                                      color: Colors.green.shade700, // Updated color
+                                      fontWeight: FontWeight.w500),
+                                )
                                     : null,
                                 trailing: GestureDetector(
                                   onTap: () => toggleTaskStatus(index),
