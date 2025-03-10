@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // For formatting time
 
 void main() {
   runApp(MyApp());
@@ -23,12 +24,12 @@ class AlertScreen extends StatefulWidget {
 class _AlertScreenState extends State<AlertScreen> {
   final ValueNotifier<List<Map<String, dynamic>>> alertStepsNotifier =
   ValueNotifier([
-    {"title": "Alert Received to team", "status": false},
-    {"title": "Assign task to team", "status": false},
-    {"title": "Leave office to field", "status": false},
-    {"title": "Arrived to the field", "status": false},
-    {"title": "Take action", "status": false},
-    {"title": "Finished task", "status": false},
+    {"title": "Alert Received to team", "status": false, "timestamp": null},
+    {"title": "Assign task to team", "status": false, "timestamp": null},
+    {"title": "Leave office to field", "status": false, "timestamp": null},
+    {"title": "Arrived to the field", "status": false, "timestamp": null},
+    {"title": "Take action", "status": false, "timestamp": null},
+    {"title": "Finished task", "status": false, "timestamp": null},
   ]);
 
   late String alertID;
@@ -44,10 +45,21 @@ class _AlertScreenState extends State<AlertScreen> {
     return (random.nextInt(900000) + 100000).toString(); // Generates a 6-digit ID
   }
 
+  String getCurrentTime() {
+    return DateFormat('hh:mm a').format(DateTime.now()); // Example: 03:45 PM
+  }
+
   void toggleTaskStatus(int index) {
     List<Map<String, dynamic>> steps = List.from(alertStepsNotifier.value);
-    steps[index]["status"] = !steps[index]["status"]; // Toggle true or false
-    alertStepsNotifier.value = steps; // Update the ValueNotifier
+    steps[index]["status"] = !steps[index]["status"];
+
+    if (steps[index]["status"]) {
+      steps[index]["timestamp"] = getCurrentTime(); // Save timestamp when checked
+    } else {
+      steps[index]["timestamp"] = null; // Remove timestamp when unchecked
+    }
+
+    alertStepsNotifier.value = steps; // Update UI
   }
 
   @override
@@ -94,8 +106,13 @@ class _AlertScreenState extends State<AlertScreen> {
                               return ListTile(
                                 title: Text(
                                   alertSteps[index]["title"],
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 16),
                                 ),
+                                subtitle: alertSteps[index]["timestamp"] != null
+                                    ? Text("Completed at: ${alertSteps[index]["timestamp"]}",
+                                    style: TextStyle(color: Colors.blue))
+                                    : null,
                                 trailing: GestureDetector(
                                   onTap: () => toggleTaskStatus(index),
                                   child: Icon(
