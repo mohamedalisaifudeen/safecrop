@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import "package:firebase_auth/firebase_auth.dart";
 import 'bottom_nav_bar.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                'Recent Alerts',
+                "Recent Activities",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12),
@@ -29,6 +30,7 @@ class HomePage extends StatelessWidget {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('notifications')
+                      .where("UUID",isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                       .orderBy('timestamp', descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {

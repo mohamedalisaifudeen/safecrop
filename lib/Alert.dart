@@ -4,6 +4,7 @@ import "ActionCard.dart";
 import "dart:convert";
 import "package:http/http.dart" as http;
 import 'dart:async';
+import 'bottom_nav_bar.dart';
 
 
 
@@ -17,6 +18,8 @@ class _AlertState extends State<Alert> {
   double lat=6.9271;
   double long=79.8612;
   int voltage=0;
+  Timer? _timer;
+
 
   Future<void> getData()async{
     final response =await http.get(Uri.parse("http://10.0.2.2:5001/getVoltage"));
@@ -36,59 +39,22 @@ class _AlertState extends State<Alert> {
   void initState() {
     super.initState();
     getData();
-    Timer.periodic(Duration(seconds: 3),(Timer t){
+    _timer=Timer.periodic(Duration(seconds: 3),(Timer t){
       getData();
     });
+  }
+
+  @override
+  void dispose(){
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
 
     return SafeArea(child: Scaffold(
-      bottomNavigationBar: Container(
-        height: MediaQuery.sizeOf(context).height/16,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.home_filled,color: Colors.grey.shade700,),
-                Text("Home",style: TextStyle(
-                  color: Colors.grey.shade700,
-                ),),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.add_alert,color: Colors.grey.shade700,),
-                Text("Alert",style: TextStyle(
-                  color: Colors.grey.shade700,
-                ),),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.map_rounded,color: Colors.grey.shade700,),
-                Text("Map",style: TextStyle(
-                  color: Colors.grey.shade700,
-                ),),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.settings,color: Colors.grey.shade700,),
-                Text("Settings",style: TextStyle(
-                  color: Colors.grey.shade700,
-                ),),
-              ],
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar:const BottomNavBar(),
       backgroundColor: Colors.white,
       body: ListView(
         children: [

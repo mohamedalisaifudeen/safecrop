@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'home_page.dart';
+import 'Alert.dart';
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
 
@@ -10,10 +11,16 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
 
+  final List<Widget> _pages=[
+    HomePage(),
+    Alert(),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
 
     // Handle navigation here if necessary
   }
@@ -21,10 +28,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      body: _pages[_selectedIndex],
       currentIndex: _selectedIndex,
+      selectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.grey,
       type: BottomNavigationBarType.fixed,
       onTap: _onItemTapped, // Add this
       items: const [
+
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(
             icon: Icon(Icons.notifications), label: 'Alerts'),
