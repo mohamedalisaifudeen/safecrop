@@ -6,9 +6,10 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -43,20 +44,20 @@ class _AlertScreenState extends State<AlertScreen> {
   @override
   void initState() {
     super.initState();
-    alertID = generateRandomID(); // Generate a random Alert ID
-    saveAlertToFirestore(); // Save initial alert data to Firestore
+    alertID = generateRandomID();
+    saveAlertToFirestore();
   }
 
   String generateRandomID() {
     final random = Random();
-    return (random.nextInt(900000) + 100000).toString(); // 6-digit ID
+    return (random.nextInt(900000) + 100000).toString();
   }
 
   String getCurrentTime() {
-    return DateFormat('hh:mm a').format(DateTime.now()); // Format time
+    return DateFormat('hh:mm a').format(DateTime.now());
   }
 
-  // Save the alert with default task statuses to Firestore
+
   void saveAlertToFirestore() async {
     await _firestore.collection('alerts').doc(alertID).set({
       "alertID": alertID,
@@ -65,7 +66,7 @@ class _AlertScreenState extends State<AlertScreen> {
     });
   }
 
-  // Update task status in Firestore when the user taps a task
+
   void toggleTaskStatus(int index) async {
     List<Map<String, dynamic>> steps = List.from(alertStepsNotifier.value);
     steps[index]["status"] = !steps[index]["status"];
