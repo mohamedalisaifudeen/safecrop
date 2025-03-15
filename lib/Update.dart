@@ -69,7 +69,7 @@ class UpdateScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            "Alert ID : 0000XXXXX",
+                            "Alert ID :0122231",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
