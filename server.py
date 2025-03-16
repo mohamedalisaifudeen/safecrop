@@ -24,6 +24,8 @@ print(FCM_TOKEN)
 sample_use_id="Je2jJZ5aTcYegufVwe9nuKKsqKr2"
 
 voltage_Dta={"Voltage":0}
+system_status = {"status": "inactive"}
+location_data = {"latitude": None, "longitude": None}
 
 @app.route("/voltage",methods=["POST"])
 def voltage():
@@ -37,6 +39,42 @@ def voltage():
 @app.route("/getVoltage",methods=["GET"])
 def voltageGet():
     return jsonify(voltage_Dta)
+
+
+
+
+@app.route('/update_status', methods=['POST'])
+def update_status():
+    global system_status
+    data = request.json
+    status = data.get("status")
+
+    # Ensure status is either 1 or 0
+    if status in [0, 1]:
+        system_status["status"] = "active" if status == 1 else "inactive"
+        return jsonify({"message": "Status updated", "status": system_status["status"]})
+    else:
+        return jsonify({"error": "Invalid status value, must be 0 or 1"}), 400
+
+@app.route('/get_status', methods=['GET'])
+def get_status():
+    return jsonify(system_status)
+
+
+# Route to receive location from Arduino (POST)
+@app.route('/update-location', methods=['POST'])
+def update_location():
+    data = request.json
+    location_data["latitude"] = data.get('latitude')
+    location_data["longitude"] = data.get('longitude')
+    return jsonify({"message": "Location updated successfully!"}), 200
+
+# Route to send location to Flutter (GET)
+@app.route('/get-location', methods=['GET'])
+def get_location():
+    return jsonify(location_data), 200
+
+
 
 
 @app.route("/iot/message", methods=["POST"])
