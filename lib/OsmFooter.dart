@@ -8,6 +8,17 @@ class OsmFooter extends StatelessWidget {
   double long;
   OsmFooter({required this.lat, required this.long});
 
+  Future<void> openGoogleMaps(double latitude, double longitude) async {
+    final googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+
+    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+      await launchUrl(Uri.parse(googleMapsUrl));
+    } else {
+      throw 'Could not open Google Maps.';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,13 +43,7 @@ class OsmFooter extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                final String googleMapsUrl =
-                    "https://www.google.com/maps/search/?api=1&query=$lat,$long";
-                if (await canLaunch(googleMapsUrl)) {
-                  await launch(googleMapsUrl);
-                } else {
-                  print("Couldnt open");
-                }
+                openGoogleMaps(lat, long);
               },
               child: Padding(
                 padding: EdgeInsets.all(11),
