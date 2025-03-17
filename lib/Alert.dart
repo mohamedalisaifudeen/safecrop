@@ -5,50 +5,57 @@ import "dart:convert";
 import "package:http/http.dart" as http;
 import 'dart:async';
 import 'bottom_nav_bar.dart';
-
-
+import "UserDataProvider.dart";
+import 'package:provider/provider.dart';
 
 class Alert extends StatefulWidget {
+
+
 
   @override
   State<Alert> createState() => _AlertState();
 }
 
 class _AlertState extends State<Alert> {
-  double lat=6.9271;
-  double long=79.8612;
-  int voltage=0;
-  Timer? _timer;
+  double lat = 0;
+  double long = 0;
+  var voltage="";
+  bool isLoading = true;
 
+  Future<void> fetchVoltageData() async {
+    var voltage_new  = await Provider.of<UserDataProvider>(context, listen: false).fetchData();
+    setState(() {
+      voltage=voltage_new;
 
-  Future<void> getData()async{
-    final response =await http.get(Uri.parse("http://10.0.2.2:5001/getVoltage"));
-    if(response.statusCode==200){
-      final data=jsonDecode(response.body);
-      setState(() {
-        voltage=data["Voltage"];
-      });
-      print(voltage);
+    });
 
-    }else{
-      throw Exception("Failed to load the data");
-    }
+  }
+
+  Future<void> fetchDataMap() async {
+    var data  = await Provider.of<UserDataProvider>(context, listen: false).fetchDataMap();
+    setState(() {
+      lat=data["lat"];
+      long=data["long"];
+      isLoading=false;
+    });
+
   }
 
   @override
   void initState() {
     super.initState();
-    getData();
-    _timer=Timer.periodic(Duration(seconds: 3),(Timer t){
-      getData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<UserDataProvider>(context, listen: false).listenToVoltage((newVoltage) {
+        setState(() {
+          voltage = newVoltage;  // Update voltage whenever it changes in Firestore
+        });
+      });
+      fetchDataMap();
     });
   }
 
-  @override
-  void dispose(){
-    _timer?.cancel();
-    super.dispose();
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +126,7 @@ class _AlertState extends State<Alert> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
-                  child: OSMViewer(
+                  child:isLoading?Center(child: CircularProgressIndicator(),):OSMViewer(
                     controller: SimpleMapController(
                       initPosition: GeoPoint(
                         latitude:lat ,

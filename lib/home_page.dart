@@ -3,8 +3,16 @@ import 'package:flutter/material.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'bottom_nav_bar.dart';
 
-class HomePage extends StatelessWidget {
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +24,45 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'SafeCrop',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Text(
+                    'Safe',
+                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    'Crop',
+                    style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Container(
+                height: 80,
+                child: Card(
+
+                  surfaceTintColor: Colors.grey.shade100,
+                  color: Colors.grey.shade100,
+                  child: Row(
+                    children: [
+                      Padding(padding:EdgeInsets.only(right: 20,left: 20) ,
+                        child:Icon(Icons.check_circle,
+                          size: 30,
+                          color: Colors.green,) ,),
+                      Text(
+                        "System Active ",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: 20),
               Text(
@@ -49,7 +93,7 @@ class HomePage extends StatelessWidget {
                       itemCount: alerts.length,
                       itemBuilder: (context, index) {
                         var alert =
-                            alerts[index].data() as Map<String, dynamic>;
+                        alerts[index].data() as Map<String, dynamic>;
                         String title = alert['title'] ?? 'No Title';
                         String body = alert['body'] ?? 'No Body';
                         Timestamp? timestamp = alert['timestamp'];
@@ -58,11 +102,19 @@ class HomePage extends StatelessWidget {
                             : 'Unknown Time';
 
                         return Card(
-                          color: Colors.yellow.shade100,
+                          shadowColor: Colors.blueGrey.shade700,
+                          color: Colors.grey.shade100,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
-                          margin: EdgeInsets.symmetric(vertical: 5),
+                          margin: EdgeInsets.symmetric(vertical: 13),
                           child: ListTile(
+                            minVerticalPadding: 17,
+
+                            leading:Icon(
+                              Icons.warning_sharp,
+                              size: 30,
+                              color: Colors.red,
+                            ),
                             title: Text(title,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text(body),
@@ -83,9 +135,11 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: const BottomNavBar(),
     );
   }
-
   String formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
     return '${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 }
+
+
+
