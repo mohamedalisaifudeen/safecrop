@@ -3,8 +3,16 @@ import 'package:flutter/material.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'bottom_nav_bar.dart';
 
-class HomePage extends StatelessWidget {
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +33,8 @@ class HomePage extends StatelessWidget {
                   Text(
                     'Crop',
                     style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
+                      fontSize: 35,
+                      fontWeight: FontWeight.w700,
                       color: Colors.green,
                     ),
                   ),
@@ -85,7 +93,7 @@ class HomePage extends StatelessWidget {
                       itemCount: alerts.length,
                       itemBuilder: (context, index) {
                         var alert =
-                            alerts[index].data() as Map<String, dynamic>;
+                        alerts[index].data() as Map<String, dynamic>;
                         String title = alert['title'] ?? 'No Title';
                         String body = alert['body'] ?? 'No Body';
                         Timestamp? timestamp = alert['timestamp'];
@@ -103,7 +111,7 @@ class HomePage extends StatelessWidget {
                             minVerticalPadding: 17,
 
                             leading:Icon(
-                                Icons.warning_sharp,
+                              Icons.warning_sharp,
                               size: 30,
                               color: Colors.red,
                             ),
@@ -127,9 +135,11 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: const BottomNavBar(),
     );
   }
-
   String formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
     return '${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 }
+
+
+

@@ -10,6 +10,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore package
 import 'package:flutter/material.dart'; // Import the generated firebase_options.dart
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
+import "UserDataProvider.dart";
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,18 +22,20 @@ void main() async{
   print("Firebase Cloud Messaging Token: $token");
 
   FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
-runApp(MaterialApp(
-
-
-    routes: {
-      "/signUp":(context)=>SignUp(),
-      "/Login":(context)=>Login(),
-      "/map_pg":(context)=> MapPage(),
-      "/alert":(context)=>Alert(),
-      "/home":(context)=>HomePage(),
-    },
-    home:LoaderPage(),
-  ),
+runApp(
+      ChangeNotifierProvider(
+        create: (context) => UserDataProvider(),
+        child:MaterialApp(
+          routes: {
+            "/signUp":(context)=>SignUp(),
+            "/Login":(context)=>Login(),
+            "/map_pg":(context)=> MapPage(),
+            "/alert":(context)=>Alert(),
+            "/home":(context)=>HomePage(),
+          },
+          home:LoaderPage(),
+        ) ,
+      )
   );
 
 }
