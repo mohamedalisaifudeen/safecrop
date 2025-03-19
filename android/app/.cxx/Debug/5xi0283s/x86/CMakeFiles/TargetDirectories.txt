@@ -1,0 +1,2 @@
+/Users/oshenhalgama/Desktop/safecrop/android/app/.cxx/Debug/5xi0283s/x86/CMakeFiles/edit_cache.dir
+/Users/oshenhalgama/Desktop/safecrop/android/app/.cxx/Debug/5xi0283s/x86/CMakeFiles/rebuild_cache.dir

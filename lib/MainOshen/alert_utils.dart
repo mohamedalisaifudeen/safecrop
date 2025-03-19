@@ -1,13 +1,11 @@
-import 'dart:math';
-import 'package:intl/intl.dart';
+import 'alert_step.dart';
 
-class AlertUtils {
-  static String generateRandomID() {
-    final random = Random();
-    return (random.nextInt(900000) + 100000).toString();
-  }
+/// Converts a list of `AlertStep` objects into a Firestore-compatible list.
+List<Map<String, dynamic>> convertStepsToMap(List<AlertStep> steps) {
+  return steps.map((step) => step.toMap()).toList();
+}
 
-  static String getCurrentTime() {
-    return DateFormat('hh:mm a').format(DateTime.now());
-  }
+/// Converts a Firestore list into a list of `AlertStep` objects.
+List<AlertStep> convertMapToSteps(List<dynamic> data) {
+  return data.map((step) => AlertStep.fromMap(step)).toList();
 }
