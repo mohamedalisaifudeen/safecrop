@@ -1,23 +1,22 @@
 class AlertStep {
   String title;
-  bool status;
-  String? timestamp;
+  bool isCompleted;
 
-  AlertStep({required this.title, this.status = false, this.timestamp});
+  AlertStep({required this.title, this.isCompleted = false});
 
+  /// Converts the `AlertStep` object into a map for storing in Firestore.
   Map<String, dynamic> toMap() {
     return {
-      "title": title,
-      "status": status,
-      "timestamp": timestamp,
+      'title': title,
+      'isCompleted': isCompleted,
     };
   }
 
+  /// Creates an `AlertStep` object from a Firestore map.
   factory AlertStep.fromMap(Map<String, dynamic> map) {
     return AlertStep(
-      title: map["title"],
-      status: map["status"],
-      timestamp: map["timestamp"],
+      title: map['title'],
+      isCompleted: map['isCompleted'],
     );
   }
 }
