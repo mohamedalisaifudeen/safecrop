@@ -1,8 +1,21 @@
+import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
 import "SignUp.dart";
 import "package:safecrop/LogIn.dart";
 
+import "Update.dart";
+
 void main(){
+  void main() async {
+    WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
+    try {
+      await Firebase.initializeApp(); // Initialize Firebase
+      runApp(const UpdateApp() as Widget); // Run the main application widget
+    } catch (e) {
+      print("Firebase initialization error: $e"); // Debugging output
+    }
+  }
+
   runApp(MaterialApp(
     routes: {
       "/signUp":(context)=>SignUp(),
@@ -10,6 +23,10 @@ void main(){
     },
     home:LoaderPage(),
   ));
+}
+
+class UpdateApp {
+  const UpdateApp();
 }
 
 class LoaderPage extends StatefulWidget {

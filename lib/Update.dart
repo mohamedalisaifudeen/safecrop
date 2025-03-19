@@ -1,188 +1,161 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const UpdateApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase
+  runApp(const MyApp());
 }
 
-class UpdateApp extends StatelessWidget {
-  const UpdateApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: UpdateScreen(),
+      title: 'Alert Details',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: const AlertDetailsScreen(alertId: '000XXXXX'), // Sample Alert ID
     );
   }
 }
 
-class UpdateScreen extends StatelessWidget {
-  final List<Map<String, String>> steps = [
-    {"title": "Alert Received to team", "time": "10:30 AM", "status": "done"},
-    {"title": "Assign task to team", "time": "10:32 AM", "status": "done"},
-    {"title": "Leave team from team", "time": "10:35 AM", "status": "done"},
-    {
-      "title": "Arrived to the field",
-      "time": "Pending...",
-      "status": "pending"
-    },
-    {"title": "Take action", "time": "Pending...", "status": "pending"},
-    {"title": "Finished task", "time": "Pending...", "status": "pending"},
-  ];
+class AlertDetailsScreen extends StatefulWidget {
+  final String alertId;
+
+  const AlertDetailsScreen({Key? key, required this.alertId}) : super(key: key);
+
+  @override
+  _AlertDetailsScreenState createState() => _AlertDetailsScreenState();
+}
+
+class _AlertDetailsScreenState extends State<AlertDetailsScreen> {
+  late Stream<DocumentSnapshot> alertStream;
+
+  @override
+  void initState() {
+    super.initState();
+    alertStream = FirebaseFirestore.instance
+        .collection('alerts')
+        .doc('mwTh34nAyp3P33gHxd51') // need to chnage with real parameter
+        .snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {},
-              ),
-              const Center(
-                child: Text(
-                  "Alert Details",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Alert ID :0122231",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade100,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Text(
-                              "In Progress",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        "Created at 10:30 AM",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: steps.length,
-                          itemBuilder: (context, index) {
-                            return StepTile(
-                              title: steps[index]['title']!,
-                              time: steps[index]['time']!,
-                              status: steps[index]['status']!,
-                              isLast: index == steps.length - 1,
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text("50% Completed", textAlign: TextAlign.center),
-                      const SizedBox(height: 8),
-                      LinearProgressIndicator(
-                        value: 0.5,
-                        backgroundColor: Colors.grey.shade300,
-                        color: Colors.green,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+      appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back),
+          onTap: () {
+            print('hello world');
+          },
         ),
+        backgroundColor: Colors.green,
+        title: const Text("Alert Details"),
       ),
-    );
-  }
-}
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: alertStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-class StepTile extends StatelessWidget {
-  final String title, time, status;
-  final bool isLast;
+          var alertData = snapshot.data?.data() as Map<String, dynamic>? ?? {};
+          String status = alertData['status'] ?? 'Pending';
+          List<dynamic> steps = (alertData['steps'] as List<dynamic>?) ?? [];
 
-  const StepTile({
-    super.key,
-    required this.title,
-    required this.time,
-    required this.status,
-    required this.isLast,
-  });
+          int completedSteps =
+              steps.where((s) => s['completed'] == true).length;
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            Icon(
-              status == "done"
-                  ? Icons.check_circle
-                  : Icons.radio_button_unchecked,
-              color: status == "done" ? Colors.green : Colors.grey,
-            ),
-            if (!isLast)
-              Container(
-                width: 2,
-                height: 30,
-                color: Colors.grey.shade300,
-              ),
-          ],
-        ),
-        const SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: status == "done" ? Colors.black : Colors.grey,
+          // Ensure no division by zero
+          double progress =
+              steps.isNotEmpty ? (completedSteps / steps.length) * 100 : 0;
+
+          return Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
             ),
-            Text(
-              time,
-              style: const TextStyle(color: Colors.grey),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "Alert ID: ${widget.alertId}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: status == 'In Progress'
+                            ? Colors.green.shade200
+                            : Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(status),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "Created at ${alertData['createdAt'] ?? 'N/A'}",
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: steps.length,
+                    itemBuilder: (context, index) {
+                      var step = steps[index];
+                      return ListTile(
+                        leading: Icon(
+                          step['completed'] ? Icons.check_circle : Icons.circle,
+                          color: step['completed'] ? Colors.green : Colors.grey,
+                        ),
+                        title: Text(step['title']),
+                        subtitle: Text(
+                          step['completed']
+                              ? step['time'] ?? 'Completed'
+                              : 'Pending...',
+                          style: TextStyle(
+                              color: step['completed']
+                                  ? Colors.green
+                                  : Colors.grey),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                LinearProgressIndicator(
+                  value:
+                      steps.isNotEmpty ? (completedSteps / steps.length) : 0.0,
+                  backgroundColor: Colors.grey.shade300,
+                  color: Colors.green,
+                ),
+                const SizedBox(height: 5),
+                Center(
+                    child: Text("${progress.toStringAsFixed(0)}% Completed")),
+              ],
             ),
-          ],
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 }
