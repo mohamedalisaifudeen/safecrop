@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "40643328018",
-    "project_id": "safecrop-58bb2",
-    "storage_bucket": "safecrop-58bb2.firebasestorage.app"
+    "project_number": "814395547436",
+    "firebase_url": "https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "demow-7f680",
+    "storage_bucket": "demow-7f680.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:40643328018:android:7ee6c11714eb95acc640cb",
+        "mobilesdk_app_id": "1:814395547436:android:23e482d3142c3191fb9689",
         "android_client_info": {
           "package_name": "com.example.safecrop"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCDROylo_gbX3CyIEECCIK7W2ZypGyEE18"
+          "current_key": "AIzaSyAIsjIg8YaDE9CLWgylk2bRGIEoDr7CSsc"
         }
       ],
       "services": {

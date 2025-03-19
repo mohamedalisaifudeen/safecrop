@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -49,20 +40,52 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAudzuZkJCv93C4BLEGRQntFi-qHVGV-jA',
+    appId: '1:814395547436:web:802e214b56aa7f7bfb9689',
+    messagingSenderId: '814395547436',
+    projectId: 'demow-7f680',
+    authDomain: 'demow-7f680.firebaseapp.com',
+    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'demow-7f680.firebasestorage.app',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCjWaab1tDZoMrlUWIiTu43i7bAGjo3-NA',
-    appId: '1:796047915468:android:43042bea42e6fba3ca8569',
-    messagingSenderId: '796047915468',
-    projectId: 'flutter-message-6c11c',
-    storageBucket: 'flutter-message-6c11c.firebasestorage.app',
+    apiKey: 'AIzaSyAIsjIg8YaDE9CLWgylk2bRGIEoDr7CSsc',
+    appId: '1:814395547436:android:23e482d3142c3191fb9689',
+    messagingSenderId: '814395547436',
+    projectId: 'demow-7f680',
+    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'demow-7f680.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDed5AtbgAt-g2R6czPXrIGk0ibDyouRTc',
-    appId: '1:796047915468:ios:9881a74f2653a0b8ca8569',
-    messagingSenderId: '796047915468',
-    projectId: 'flutter-message-6c11c',
-    storageBucket: 'flutter-message-6c11c.firebasestorage.app',
+    apiKey: 'AIzaSyCbo4SPbPjDwvGAgukkNkoHWBFzbzauxpo',
+    appId: '1:814395547436:ios:89f741b73cf8d999fb9689',
+    messagingSenderId: '814395547436',
+    projectId: 'demow-7f680',
+    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'demow-7f680.firebasestorage.app',
     iosBundleId: 'com.example.safecrop',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCbo4SPbPjDwvGAgukkNkoHWBFzbzauxpo',
+    appId: '1:814395547436:ios:89f741b73cf8d999fb9689',
+    messagingSenderId: '814395547436',
+    projectId: 'demow-7f680',
+    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'demow-7f680.firebasestorage.app',
+    iosBundleId: 'com.example.safecrop',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyAudzuZkJCv93C4BLEGRQntFi-qHVGV-jA',
+    appId: '1:814395547436:web:2a17349ba3f58b34fb9689',
+    messagingSenderId: '814395547436',
+    projectId: 'demow-7f680',
+    authDomain: 'demow-7f680.firebaseapp.com',
+    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'demow-7f680.firebasestorage.app',
   );
 }
