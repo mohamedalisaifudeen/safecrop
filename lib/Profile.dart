@@ -5,7 +5,8 @@ import "package:firebase_auth/firebase_auth.dart";
 import 'dart:math';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final Widget? bottombar;
+  const Profile({super.key,this.bottombar=const BottomNavBar()});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -17,6 +18,7 @@ class _ProfileState extends State<Profile> {
   String? number;
   String? type;
   String? img;
+  bool loading=true;
 
   var images=["Img1.jpg","Img2.jpg","Img3.jpg","Img4.jpg","Img5.jpg","Img6.jpg","Img7.jpg"];
   final db = FirebaseFirestore.instance;
@@ -34,6 +36,7 @@ class _ProfileState extends State<Profile> {
           type=read_vals.get("type");
           img=images[randomIndex];
         });
+        loading=false;
 
       },
       onError: (e) => print("Error completing: $e"),
@@ -46,8 +49,8 @@ class _ProfileState extends State<Profile> {
     return SafeArea(
 
         child: Scaffold(
-            bottomNavigationBar:BottomNavBar(),
-            body: Column(
+            bottomNavigationBar:widget.bottombar,
+            body:loading?CircularProgressIndicator():Column(
 
               children: [
                 SizedBox(

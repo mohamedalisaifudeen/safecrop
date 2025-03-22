@@ -3,6 +3,7 @@ import "OsmFooter.dart";
 import 'home_page.dart';
 import "UserDataProvider.dart";
 import 'package:provider/provider.dart';
+import 'OrricerHome.dart';
 
 class MapPage extends StatefulWidget {
   final double lat;
@@ -52,7 +53,7 @@ class _MapPageState extends State<MapPage> {
             onTap: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage()),
+                MaterialPageRoute(builder: (context) => OfficerHome()),
               );
             },
             child: Icon(

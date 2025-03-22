@@ -21,6 +21,7 @@ class _AlertState extends State<Alert> {
   double long = 0;
   var voltage="";
   bool isLoading = true;
+  bool main=true;
 
   Future<void> fetchVoltageData() async {
     var voltage_new  = await Provider.of<UserDataProvider>(context, listen: false).fetchData();
@@ -52,6 +53,7 @@ class _AlertState extends State<Alert> {
       });
       fetchDataMap();
       fetchVoltageData();
+      main=false;
     });
   }
 
@@ -64,7 +66,7 @@ class _AlertState extends State<Alert> {
     return SafeArea(child: Scaffold(
       bottomNavigationBar:const BottomNavBar(),
       backgroundColor: Colors.white,
-      body: ListView(
+      body:main?CircularProgressIndicator():ListView(
         children: [
           Container(
             decoration: BoxDecoration(

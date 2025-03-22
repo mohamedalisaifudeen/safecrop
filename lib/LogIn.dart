@@ -204,9 +204,13 @@ class _LoginState extends State<Login> {
                                           print("Field updated successfully");
                                           Navigator.pushNamed(context, '/officer-home');
                                           return;
-                                        } else{
+                                        } else if(userSnapshot.docs.first["type"]=="Farmer" && farmercheck==false){
                                           await FirebaseAuth.instance.signOut();
-                                          showError("You are not a Farmer");
+                                          showError("You are not a Officer");
+                                          return ;
+                                        }else{
+                                          await FirebaseAuth.instance.signOut();
+                                          showError("You are not a Officer");
                                           return ;
                                         }
 
@@ -222,6 +226,8 @@ class _LoginState extends State<Login> {
                                         }
 
 
+                                      }else{
+                                        showError("Sign in failed check credencials");
                                       };
 
                                     },

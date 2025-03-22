@@ -6,6 +6,7 @@ import "Profile.dart";
 import "OfficerAlert.dart";
 import 'OrricerHome.dart';
 import "AlertNew.dart";
+import "alert_details_container.dart";
 
 class BottomNavBar extends StatefulWidget {
   final String data;
@@ -18,7 +19,12 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
 
-  late List<Widget> _pages;
+  late List<Widget>     _pages = [
+     HomePage(),
+     Alert(),
+     AlertDetailsContainer() ,
+    Profile(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -34,14 +40,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   void initState() {
     super.initState();
+    print(widget.data);
+    print("Contains 'Farmer'? ${widget.data.contains("Farmer")}");
 
     // Initialize _pages inside initState() where `widget` is accessible
-    _pages = [
-      widget.data == "Farmer" ? HomePage() : OfficerHome(),
-      widget.data == "Farmer" ? Alert() : AlertsApp(),
-      widget.data == "Farmer" ? MapPage() : MyApp(),
-      Profile(),
-    ];
+
   }
   @override
   Widget build(BuildContext context) {

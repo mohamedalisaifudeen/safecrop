@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'Alert.dart';
 import "Map.dart";
-import "Profile.dart";
+import "OfficeProfile.dart";
 import 'OfficerAlert.dart';
 import 'OrricerHome.dart';
 import "AlertNew.dart";
@@ -21,7 +21,7 @@ class _Officernav extends State<Officernav> {
     OfficerHome(),
     AlertsApp(),
     MyApp(),
-    Profile(),
+    Officeprofile(),
   ];
 
   void _onItemTapped(int index) {

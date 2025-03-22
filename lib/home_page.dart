@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(data: "Farmer",),
     );
   }
   String formatTimestamp(Timestamp timestamp) {
