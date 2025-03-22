@@ -3,20 +3,22 @@ import 'home_page.dart';
 import 'Alert.dart';
 import "Map.dart";
 import "Profile.dart";
+import 'OfficerAlert.dart';
+import 'OrricerHome.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+class Officernav extends StatefulWidget {
+  const Officernav({super.key});
 
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  _Officernav createState() => _Officernav();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _Officernav extends State<Officernav> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages=[
-    HomePage(),
-    Alert(),
+    OfficerHome(),
+    AlertsApp(),
     MapPage(),
     Profile(),
   ];
