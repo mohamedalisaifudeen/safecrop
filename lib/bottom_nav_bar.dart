@@ -3,9 +3,14 @@ import 'home_page.dart';
 import 'Alert.dart';
 import "Map.dart";
 import "Profile.dart";
+import "OfficerAlert.dart";
+import 'OrricerHome.dart';
+import "AlertNew.dart";
+import "alert_details_container.dart";
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  final String data;
+  const BottomNavBar({super.key,this.data=""});
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -14,10 +19,10 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages=[
-    HomePage(),
-    Alert(),
-    MapPage(),
+  late List<Widget>     _pages = [
+     HomePage(),
+     Alert(),
+     AlertDetailsContainer() ,
     Profile(),
   ];
 
@@ -32,7 +37,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     // Handle navigation here if necessary
   }
+  @override
+  void initState() {
+    super.initState();
+    print(widget.data);
+    print("Contains 'Farmer'? ${widget.data.contains("Farmer")}");
 
+    // Initialize _pages inside initState() where `widget` is accessible
+
+  }
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(

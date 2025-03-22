@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'OrricerHome.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/officer-home': (context) => OfficerHome(), // Ensure this screen exists
+      },
       debugShowCheckedModeBanner: false,
       home: AlertScreen(),
     );
@@ -60,7 +64,7 @@ class _AlertScreenState extends State<AlertScreen> {
 
   void saveAlertToFirestore() async {
     await _firestore.collection('alerts').doc(alertID).set({
-      "alertID": alertID,
+      "alertID": FirebaseAuth.instance.currentUser?.uid,
       "tasks": alertStepsNotifier.value,
       "createdAt": DateTime.now(),
     });
@@ -98,7 +102,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 child: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/officer-home');
                   },
                 ),
               ),

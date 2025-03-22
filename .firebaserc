@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "demow-7f680"
-  }
+    "safeCrop": "safecrop-c426d"
+  },
+  "targets": {},
+  "etags": {}
 }

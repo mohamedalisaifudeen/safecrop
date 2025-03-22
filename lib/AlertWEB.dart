@@ -10,12 +10,13 @@ void main() async {
   // Firebase initialization for web and mobile
   await Firebase.initializeApp(
     options: FirebaseOptions(
-      apiKey: "AIzaSyCtcr3hCw2HOpe2QdjFup5l2LAvpSn48pA",
-      authDomain: "sdgpplz.firebaseapp.com",
-      projectId: "sdgpplz",
-      storageBucket: "sdgpplz.appspot.com",
-      messagingSenderId: "791759555432",
-      appId: "1:791759555432:web:6aee69f7f97cf5cdb964dd",
+        apiKey: "AIzaSyD62EWymo2h2E2460X6TG96_ffChJW5gWQ",
+        authDomain: "safecrop-c426d.firebaseapp.com",
+        projectId: "safecrop-c426d",
+        storageBucket: "safecrop-c426d.firebasestorage.app",
+        messagingSenderId: "481531315929",
+        appId: "1:481531315929:web:34b4f5a8e0f08f256be0c8",
+        measurementId: "G-H4Z3ZF4L25"
     ),
   );
 

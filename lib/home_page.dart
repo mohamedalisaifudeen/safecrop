@@ -4,6 +4,7 @@ import "package:firebase_auth/firebase_auth.dart";
 import 'bottom_nav_bar.dart';
 import "UserDataProvider.dart";
 import 'package:provider/provider.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -161,7 +162,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(data: "Farmer",),
     );
   }
   String formatTimestamp(Timestamp timestamp) {

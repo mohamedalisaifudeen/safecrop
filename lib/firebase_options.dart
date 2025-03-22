@@ -41,51 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAudzuZkJCv93C4BLEGRQntFi-qHVGV-jA',
-    appId: '1:814395547436:web:802e214b56aa7f7bfb9689',
-    messagingSenderId: '814395547436',
-    projectId: 'demow-7f680',
-    authDomain: 'demow-7f680.firebaseapp.com',
-    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'demow-7f680.firebasestorage.app',
+    apiKey: 'AIzaSyD62EWymo2h2E2460X6TG96_ffChJW5gWQ',
+    appId: '1:481531315929:web:34b4f5a8e0f08f256be0c8',
+    messagingSenderId: '481531315929',
+    projectId: 'safecrop-c426d',
+    authDomain: 'safecrop-c426d.firebaseapp.com',
+    storageBucket: 'safecrop-c426d.firebasestorage.app',
+    measurementId: 'G-H4Z3ZF4L25',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAIsjIg8YaDE9CLWgylk2bRGIEoDr7CSsc',
-    appId: '1:814395547436:android:23e482d3142c3191fb9689',
-    messagingSenderId: '814395547436',
-    projectId: 'demow-7f680',
-    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'demow-7f680.firebasestorage.app',
+    apiKey: 'AIzaSyALlBviQGxZgx1Hk25b2Yx8par4LiMlbKA',
+    appId: '1:481531315929:android:5da163a80613014d6be0c8',
+    messagingSenderId: '481531315929',
+    projectId: 'safecrop-c426d',
+    storageBucket: 'safecrop-c426d.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCbo4SPbPjDwvGAgukkNkoHWBFzbzauxpo',
-    appId: '1:814395547436:ios:89f741b73cf8d999fb9689',
-    messagingSenderId: '814395547436',
-    projectId: 'demow-7f680',
-    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'demow-7f680.firebasestorage.app',
+    apiKey: 'AIzaSyBts_NtAJ5TCBQeC5IlfOs7Jp6sBxLVtok',
+    appId: '1:481531315929:ios:a64be769bed3318f6be0c8',
+    messagingSenderId: '481531315929',
+    projectId: 'safecrop-c426d',
+    storageBucket: 'safecrop-c426d.firebasestorage.app',
     iosBundleId: 'com.example.safecrop',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCbo4SPbPjDwvGAgukkNkoHWBFzbzauxpo',
-    appId: '1:814395547436:ios:89f741b73cf8d999fb9689',
-    messagingSenderId: '814395547436',
-    projectId: 'demow-7f680',
-    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'demow-7f680.firebasestorage.app',
+    apiKey: 'AIzaSyBts_NtAJ5TCBQeC5IlfOs7Jp6sBxLVtok',
+    appId: '1:481531315929:ios:a64be769bed3318f6be0c8',
+    messagingSenderId: '481531315929',
+    projectId: 'safecrop-c426d',
+    storageBucket: 'safecrop-c426d.firebasestorage.app',
     iosBundleId: 'com.example.safecrop',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAudzuZkJCv93C4BLEGRQntFi-qHVGV-jA',
-    appId: '1:814395547436:web:2a17349ba3f58b34fb9689',
-    messagingSenderId: '814395547436',
-    projectId: 'demow-7f680',
-    authDomain: 'demow-7f680.firebaseapp.com',
-    databaseURL: 'https://demow-7f680-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'demow-7f680.firebasestorage.app',
+    apiKey: 'AIzaSyD62EWymo2h2E2460X6TG96_ffChJW5gWQ',
+    appId: '1:481531315929:web:eb19766609eee6016be0c8',
+    messagingSenderId: '481531315929',
+    projectId: 'safecrop-c426d',
+    authDomain: 'safecrop-c426d.firebaseapp.com',
+    storageBucket: 'safecrop-c426d.firebasestorage.app',
+    measurementId: 'G-E1T9CGTQN5',
   );
+
 }

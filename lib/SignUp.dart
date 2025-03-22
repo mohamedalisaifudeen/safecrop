@@ -248,10 +248,11 @@ class _SignUpState extends State<SignUp> {
                               (checkfarmer == false && checkOfficer == false)) {
                             return;
                           }
-                          ;
-                          createUser(password, emial).then((_){
-                            _formKey.currentState?.reset();
-                          });
+                            createUser(password, emial).then((_){
+                              _formKey.currentState?.reset();
+                            });
+
+
 
                         },
                         child: Text(
