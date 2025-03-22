@@ -14,6 +14,8 @@ import 'package:provider/provider.dart';
 import "UserDataProvider.dart";
 import "OfficerAlert.dart";
 import 'OrricerHome.dart';
+import "AlertNew.dart";
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -35,6 +37,7 @@ runApp(
             "/home":(context)=>HomePage(),
             "/officer":(context)=>AlertsApp(),
             "/officer-home":(context)=>OfficerHome(),
+            "/alert-new":(context)=>MyApp(),
 
           },
           home:LoaderPage(),

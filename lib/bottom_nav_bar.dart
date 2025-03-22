@@ -3,9 +3,13 @@ import 'home_page.dart';
 import 'Alert.dart';
 import "Map.dart";
 import "Profile.dart";
+import "OfficerAlert.dart";
+import 'OrricerHome.dart';
+import "AlertNew.dart";
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  final String data;
+  const BottomNavBar({super.key,this.data=""});
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -14,12 +18,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages=[
-    HomePage(),
-    Alert(),
-    MapPage(),
-    Profile(),
-  ];
+  late List<Widget> _pages;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -32,7 +31,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     // Handle navigation here if necessary
   }
+  @override
+  void initState() {
+    super.initState();
 
+    // Initialize _pages inside initState() where `widget` is accessible
+    _pages = [
+      widget.data == "Farmer" ? HomePage() : OfficerHome(),
+      widget.data == "Farmer" ? Alert() : AlertsApp(),
+      widget.data == "Farmer" ? MapPage() : MyApp(),
+      Profile(),
+    ];
+  }
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
