@@ -13,7 +13,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import "UserDataProvider.dart";
 import "OfficerAlert.dart";
-
+import 'OrricerHome.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,6 +34,7 @@ runApp(
             "/alert":(context)=>Alert(),
             "/home":(context)=>HomePage(),
             "/officer":(context)=>AlertsApp(),
+            "/officer-home":(context)=>OfficerHome(),
 
           },
           home:LoaderPage(),

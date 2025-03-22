@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import "UserDataProvider.dart";
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:intl/intl.dart";
+import "OfficerNav.dart";
 class AlertsApp extends StatefulWidget {
   const AlertsApp({super.key});
 
@@ -73,6 +74,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar:const Officernav(),
       appBar: AppBar(
         title: const Text(
           'Alerts',

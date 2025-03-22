@@ -5,32 +5,33 @@ import "UserDataProvider.dart";
 import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+  final double lat;
+  final double long;
+
+  const MapPage({super.key,this.long=0.0,this.lat=0.0});
 
   @override
   State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
-  double lat=0.0;
-  double long=0.0;
   bool isLoading = true;
 
-  Future<void> fetchDataMap() async {
-    var data  = await Provider.of<UserDataProvider>(context, listen: false).fetchDataMap();
-    setState(() {
-      lat=data["lat"];
-      long=data["long"];
-      isLoading=false;
-
-    });
-
-  }
+  // Future<void> fetchDataMap() async {
+  //   var data  = await Provider.of<UserDataProvider>(context, listen: false).fetchDataMap();
+  //   setState(() {
+  //     lat=data["lat"];
+  //     long=data["long"];
+  //     isLoading=false;
+  //
+  //   });
+  //
+  // }
 
   @override
   void initState() {
     super.initState();
-      fetchDataMap();
+    isLoading=false;
 
   }
 
@@ -72,7 +73,7 @@ class _MapPageState extends State<MapPage> {
         ),
         body:isLoading
             ? const Center(child: CircularProgressIndicator())
-            : OsmFooter(lat: lat, long: long),
+            : OsmFooter(lat: widget.lat, long: widget.long),
       ),
     );
   }
