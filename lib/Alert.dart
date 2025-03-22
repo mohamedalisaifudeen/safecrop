@@ -51,6 +51,7 @@ class _AlertState extends State<Alert> {
         });
       });
       fetchDataMap();
+      fetchVoltageData();
     });
   }
 
@@ -190,16 +191,17 @@ class _AlertState extends State<Alert> {
                     Icon(Icons.stacked_bar_chart_rounded,color: Colors.amber,),
                     Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/4.7),
                       child: Text("Voltage Reading"),),
-                    Text(voltage.toString()+"V"+ " (Normal: 5V)"),
+                    int.parse(voltage) <1? Text(voltage.toString()+"V"+ " (Risk: 5V)"):Text(voltage.toString()+"V"+ " (Normal: 5V)"),
+
                   ],
                 ),
                 Padding(padding: EdgeInsets.only(top: 13,bottom: 13),
                   child: Row(
                     children: [
                       Icon(Icons.warning_sharp,color: Colors.red,),
-                      Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/5.4),
+                      Padding(padding:int.parse(voltage) <1?EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/5.4):EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/3.4),
                         child: Text("Wire Break Type"),),
-                      Text("Wire break detected"),
+                      int.parse(voltage) <1?Text("Wire break detected"):Text("Wire intact"),
                     ],
                   ),
                 ),
@@ -209,8 +211,10 @@ class _AlertState extends State<Alert> {
                     Icon(Icons.warning_sharp,color: Colors.red,),
                     Padding(padding: EdgeInsets.only(left:10,right: MediaQuery.of(context).size.width/2.3),
                       child: Text("Security Level"),),
-                    Text("High",style: TextStyle(
+                    int.parse(voltage) <1?Text("High",style: TextStyle(
                         color: Colors.red
+                    ),):Text("High",style: TextStyle(
+                        color: Colors.green
                     ),),
                   ],
                 ),

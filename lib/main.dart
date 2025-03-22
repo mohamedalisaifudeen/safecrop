@@ -12,6 +12,7 @@ import 'package:flutter/material.dart'; // Import the generated firebase_options
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import "UserDataProvider.dart";
+import "OfficerAlert.dart";
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,8 @@ runApp(
             "/map_pg":(context)=> MapPage(),
             "/alert":(context)=>Alert(),
             "/home":(context)=>HomePage(),
+            "/officer":(context)=>AlertsApp(),
+
           },
           home:LoaderPage(),
         ) ,
