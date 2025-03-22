@@ -66,11 +66,6 @@ class _AlertsScreenState extends State<AlertsScreen> {
                 children: [
                   _buildFilterTab('All', Colors.blue),
                   const SizedBox(width: 16),
-                  //_buildFilterTab('High Priority', Colors.red),
-                  //const SizedBox(width: 16),
-                  //_buildFilterTab('Medium', Colors.orange),
-                  //const SizedBox(width: 16),
-                  //_buildFilterTab('Low', Colors.yellow),
                 ],
               ),
             ),
@@ -245,27 +240,6 @@ class _AlertsScreenState extends State<AlertsScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          if (status != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              // decoration: BoxDecoration(
-                              //   color: status == 'Active'
-                              //       ? Colors.grey[200]
-                              //       : Colors.grey[100],
-                              //   borderRadius: BorderRadius.circular(16),
-                              // ),
-                              // child: Text(
-                              //   status,
-                              //   style: TextStyle(
-                              //     fontSize: 14,
-                              //     color: status == 'Active'
-                              //         ? Colors.black
-                              //         : Colors.grey[600],
-                              //     fontWeight: FontWeight.w500,
-                              //   ),
-                              // ),
-                            ),
                         ],
                       ),
                       const SizedBox(height: 4),
