@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'bottom_nav_bar.dart';
-
-
+import "UserDataProvider.dart";
+import 'package:provider/provider.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -12,7 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String status='active';
 
+  Future<void> fetchDataMap() async {
+    var data  = await Provider.of<UserDataProvider>(context, listen: false).fetchDataMap();
+    setState(() {
+      status=data["status"];
+    });
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataMap();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +62,7 @@ class _HomePageState extends State<HomePage> {
 
                   surfaceTintColor: Colors.grey.shade100,
                   color: Colors.grey.shade100,
-                  child: Row(
+                  child:status=="active"? Row(
                     children: [
                       Padding(padding:EdgeInsets.only(right: 20,left: 20) ,
                         child:Icon(Icons.check_circle,
@@ -55,6 +70,20 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.green,) ,),
                       Text(
                         "System Active ",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ):Row(
+                    children: [
+                      Padding(padding:EdgeInsets.only(right: 20,left: 20) ,
+                        child:Icon(Icons.check_circle,
+                          size: 30,
+                          color: Colors.red,) ,),
+                      Text(
+                        "System Inactive ",
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w600

@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                                   ),
                                   CustomBtn(
                                     click: () {
-                                      Navigator.pushNamed(context, '/signUp');
+                                      Navigator.pushNamed(context, '/officer');
                                     },
                                     txt: "Go to Sign Up",
                                     color: Colors.teal,

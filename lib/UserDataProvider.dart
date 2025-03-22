@@ -7,7 +7,7 @@ class UserDataProvider with ChangeNotifier {
   double lat=0.0;
   double long=0.0;
   String status="active";
-
+  List<Object?> list=[];
   Future<String> fetchData() async {
     try {
       final db = FirebaseFirestore.instance;
@@ -34,10 +34,11 @@ class UserDataProvider with ChangeNotifier {
             final read_vals = querySnapshot.docs.first;
             this.lat = read_vals.get("latitude").toDouble();
             this.long = read_vals.get("longitude").toDouble();
+            this.status=read_vals.get("status");
             notifyListeners();
 
           });
-      return {"lat":lat,"long":long};
+      return {"lat":lat,"long":long,"status":status};
     } catch (error) {
       throw error;
     }
@@ -58,5 +59,19 @@ class UserDataProvider with ChangeNotifier {
       }
     });
   }
+
+  Future<List<Object?>> OfficerAlert()async {
+    final docRef = FirebaseFirestore.instance.collection("notifications");
+
+    QuerySnapshot querySnapshot = await docRef.get();
+
+    final data = querySnapshot.docs
+        .map((doc) => doc.data()).toList();
+
+    return data;
+  }
+
+
+
 
 }

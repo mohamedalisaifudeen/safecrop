@@ -33,6 +33,8 @@ class _MapPageState extends State<MapPage> {
       fetchDataMap();
 
   }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
