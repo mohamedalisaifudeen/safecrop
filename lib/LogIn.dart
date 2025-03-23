@@ -169,66 +169,81 @@ class _LoginState extends State<Login> {
                                   ),
                                   CustomBtn(
                                     click: ()async {
-                                      final bool isvalid =
-                                          _formKey.currentState?.validate() ??
-                                              false;
-                                      if (!isvalid) {
-                                        return;
-                                      };
-                                      var sigIn=await signInUser(email, password);
-                                      if(sigIn){
-                                        var userRef = FirebaseFirestore.instance
-                                            .collection('userDetails')
-                                            .where('uid', isEqualTo:FirebaseAuth.instance.currentUser?.uid); // Query by uid
-                                        var userSnapshot = await userRef.get();
+    final bool isvalid =
+    _formKey.currentState?.validate() ??
+    false;
+    if (!isvalid) {
+    return;
+    };
+    var sigIn = await signInUser(
+    email, password);
+    if (sigIn) {
+    var userRef = FirebaseFirestore.instance
+        .collection('userDetails')
+        .where('uid',
+    isEqualTo: FirebaseAuth.instance
+        .currentUser
+        ?.uid); // Query by uid
+    var userSnapshot = await userRef.get();
 
-                                        if(userSnapshot.docs.first["type"]=="Farmer" && farmercheck==true){
+    if (userSnapshot.docs.first["type"] ==
+    "Farmer" && farmercheck == true) {
+    Navigator.pushNamed(context, '/home');
+    return;
+    } else
+    if (userSnapshot.docs.first["type"] ==
+    "Officer" && farmercheck == false) {
+    QuerySnapshot querySnapshot1 = await FirebaseFirestore
+        .instance
+        .collection('userDetails')
+        .where('type',
+    isEqualTo: 'Farmer') // Filter only farmers
+        .get();
 
-                                          Navigator.pushNamed(context, '/home');
-                                          return;
-                                        }else if(userSnapshot.docs.first["type"]=="Officer" && farmercheck==false){
-                                          QuerySnapshot querySnapshot1 = await FirebaseFirestore.instance
-                                              .collection('userDetails')
-                                              .where('type', isEqualTo: 'Farmer') // Filter only farmers
-                                              .get();
+    var intValue = Random().nextInt(
+    querySnapshot1.docs.length);
+    var uid = querySnapshot1
+        .docs[intValue]["uid"];
+    var docId = querySnapshot1.docs.first
+        .id;
 
-                                          var intValue = Random().nextInt(querySnapshot1.docs.length);
-                                          var uid=querySnapshot1.docs[intValue]["uid"];
-                                          var docId=querySnapshot1.docs.first.id;
+    await FirebaseFirestore.instance
+        .collection('userDetails')
+        .doc(
+    docId) // Reference the document by ID
+        .set({
+    "OfficerId": FirebaseAuth.instance
+        .currentUser?.uid
+    }, SetOptions(
+    merge: true)); // Merge ensures only the field updates
 
-                                          await FirebaseFirestore.instance
-                                              .collection('userDetails')
-                                              .doc(docId) // Reference the document by ID
-                                              .set({"OfficerId": FirebaseAuth.instance.currentUser?.uid}, SetOptions(merge: true)); // Merge ensures only the field updates
+    print("Field updated successfully");
+    Navigator.pushNamed(
+    context, '/officer-home');
+    return;
+    } else
+    if (userSnapshot.docs.first["type"] ==
+    "Farmer" && farmercheck == false) {
+    await FirebaseAuth.instance.signOut();
+    showError("You are not a Officer");
+    return;
+    } else if (farmercheck == false &&
+    officercheck == false) {
+    showError(
+    "Please select who you are");
+    return;
+    } else
+    if (userSnapshot.docs.first["type"] ==
+    "Officer" && farmercheck == true) {
+    await FirebaseAuth.instance.signOut();
+    showError("You are not a Farmer");
+    return;
+    }
+    }else {
+    showError(
+    "Sign in failed check credencials");
 
-                                          print("Field updated successfully");
-                                          Navigator.pushNamed(context, '/officer-home');
-                                          return;
-                                        } else if(userSnapshot.docs.first["type"]=="Farmer" && farmercheck==false){
-                                          await FirebaseAuth.instance.signOut();
-                                          showError("You are not a Officer");
-                                          return ;
-                                        }else{
-                                          await FirebaseAuth.instance.signOut();
-                                          showError("You are not a Officer");
-                                          return ;
-                                        }
-
-                                        if(farmercheck==false && officercheck==false){
-                                          showError("Please select who you are");
-                                          return ;
-                                        }
-
-           else{
-                                          await FirebaseAuth.instance.signOut();
-                                          showError("You are not an Officer");
-                                          return ;
-                                        }
-
-
-                                      }else{
-                                        showError("Sign in failed check credencials");
-                                      };
+    };
 
                                     },
 

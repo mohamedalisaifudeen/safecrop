@@ -26,7 +26,9 @@ class OsmMap extends StatelessWidget {
             minZoomLevel: 2,
           ),
         ),
-        height: 200,
+        constraints: BoxConstraints(
+          minHeight: 0,
+        ),
       ),
     );
   }

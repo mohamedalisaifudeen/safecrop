@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
 
         child: Scaffold(
             bottomNavigationBar:widget.bottombar,
-            body:loading?CircularProgressIndicator():Column(
+            body:loading?Center(child: CircularProgressIndicator()):Column(
 
               children: [
                 SizedBox(

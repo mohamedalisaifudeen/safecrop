@@ -7,6 +7,7 @@ import "OfficerAlert.dart";
 import 'OrricerHome.dart';
 import "AlertNew.dart";
 import "alert_details_container.dart";
+import "Update.dart";
 
 class BottomNavBar extends StatefulWidget {
   final String data;
@@ -20,9 +21,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
 
   late List<Widget>     _pages = [
-     HomePage(),
-     Alert(),
-     AlertDetailsContainer() ,
+    HomePage(),
+    Alert(),
+    MyApp_new(),
     Profile(),
   ];
 

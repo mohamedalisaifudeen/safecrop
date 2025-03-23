@@ -37,7 +37,7 @@ class OsmFooter extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 TextButton(onPressed: ()async{
                   final String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=$lat,$long";
