@@ -72,9 +72,15 @@ class _MapPageState extends State<MapPage> {
               )
           ),
         ),
-        body:isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : OsmFooter(lat: widget.lat, long: widget.long),
+        body:isLoading ? const Center(child: CircularProgressIndicator()):
+        Stack(
+          children: [
+            Positioned(child: OsmFooter(lat: widget.lat, long: widget.long)),
+          ],
+
+        ),
+
+
       ),
     );
   }
