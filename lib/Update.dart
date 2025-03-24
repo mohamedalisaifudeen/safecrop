@@ -65,7 +65,7 @@ class _AlertDetailsScreenState extends State<AlertDetailsScreen> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-
+// fetch alert data from Firestore document
           var alertData = snapshot.data?.data() as Map<String, dynamic>? ?? {};
           String status = alertData['status'] ?? 'Pending';
           List<dynamic> steps = (alertData['steps'] as List<dynamic>?) ?? [];
